@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import Navbar from './components/Navbar'
+import ProductLine from './components/ProductsLines'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <Navbar></Navbar>
+      <div className="row">
+        <Navbar></Navbar>
+      </div>
+      <ProductLine></ProductLine>
     </>
   )
 }

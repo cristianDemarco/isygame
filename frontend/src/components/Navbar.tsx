@@ -1,6 +1,6 @@
 const Navbar = () => {
     return (
-        <nav className="navbar bg-body-tertiary fixed-top" data-bs-theme="dark">
+        <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">
             <div className="container-fluid">
                 <a className="navbar-brand" href="#">
                     <img src="src/assets/logo-isygame.png" alt="Logo" width="100" height="100" className="d-inline-block align-text-middle"></img>
