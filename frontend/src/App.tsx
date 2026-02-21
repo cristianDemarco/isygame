@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Navbar from './components/Navbar'
-import ProductLine from './components/ProductsLines'
+import HomePage from './pages/Homepage'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -10,7 +10,7 @@ function App() {
       <div className="row">
         <Navbar></Navbar>
       </div>
-      <ProductLine></ProductLine>
+      <HomePage></HomePage>
     </>
   )
 }

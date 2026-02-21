@@ -4,6 +4,8 @@ import com.example.DTOs.ProductDTO;
 import com.example.model.Product;
 import com.example.service.ProductService;
 
+import java.util.List;
+
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,20 +31,19 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
+    @GetMapping
+    public List<ProductDTO> getProducts(@RequestParam int page, @RequestParam int limit){
+        return productService.getProducts(page, limit);
+    }
+
     @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable Long id){
-        Product product = productService.getProductById(id);
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPrice()
-        );
+        return productService.getProduct(id);
     }
 
     @GetMapping("/{id}/image")
     public void getProductImage(HttpServletResponse response, @PathVariable Long id) {
-        byte[] image = productService.getProductById(id).getImage();
+        byte[] image = productService.getProductImage(id);
         response.setContentType("image/jpeg");
         response.setHeader("Content-disposition", "attachment; filename=\"product_image\"");
 
