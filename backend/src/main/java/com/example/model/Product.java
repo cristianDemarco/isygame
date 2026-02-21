@@ -37,6 +37,10 @@ public class Product {
     @PositiveOrZero
     private BigDecimal price;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image;
+
     @ManyToMany(mappedBy = "products")
     private Set<Cart> carts = new HashSet<>();
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
 
     public User saveUserWithCart(User user){
         Cart cart = new Cart();
