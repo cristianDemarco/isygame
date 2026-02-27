@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ProductsLines from '../components/ProductsLines';
+import ProductsLines from '../../components/ProductsLines';
 
 function HomePage(){
     const [page, setPageNum] = useState(0);
