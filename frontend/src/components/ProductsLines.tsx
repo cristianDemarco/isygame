@@ -4,7 +4,7 @@ import type { ProductDTO } from "../DTOs/ProductDTO";
 
 const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boolean) => void}) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
-    const LIMIT = 9;
+    const LIMIT = 8;
 
     useEffect(() => {
             fetch(`/api/products?page=${page}&limit=${LIMIT}`)
@@ -23,7 +23,7 @@ const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boo
             <div className="container">
                 <div className="row my-5 d-flex justify-content-start">
                     {products.map((value, index) => (
-                        <div className="col-4 my-4 d-flex justify-content-around" key={index}>
+                        <div className="col my-4 d-flex justify-content-around" key={index}>
                             <Product product={value}/>
                         </div>
                     ))}
