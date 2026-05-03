@@ -8,12 +8,12 @@ const LoginPage = () => {
                     <form className="mx-5">
                         <div className="mb-3">
                             <label htmlFor="inputEmail" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="inputEmail" aria-describedby="emailHelp"></input>
+                            <input type="email" className="form-control" id="inputEmail" minLength={3} maxLength={50} aria-describedby="emailHelp" required></input>
                             <div className="form-text">We'll never share your email with anyone else.</div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputPassword" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="inputPassword"></input>
+                            <input type="password" className="form-control" id="inputPassword" minLength={8} maxLength={50} required></input>
                         </div>
                         <div className="w-100 d-flex justify-content-center">
                             <button type="submit" className="btn btn-primary px-5">Submit</button>
