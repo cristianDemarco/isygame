@@ -11,6 +11,8 @@ import lombok.Setter;
 
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
+
 @Entity
 @Table
 @Getter
@@ -23,9 +25,9 @@ public class User {
     private Long id;
 
     @Column
-    @Size(min=3, max=50)
+    @Size(min=3, max=30)
     @NotNull
-    private String name;
+    private String username;
 
     @Column(unique = true)
     @Size(min=3, max=50)
@@ -34,9 +36,12 @@ public class User {
     private String email;
 
     @Column
-    @Size(min=3, max=50)
+    @Size(min=8, max=50)
     @NotNull
     private String password;
+
+    @Column
+    private LocalDate createdAt;
 
     @JsonManagedReference
     @OneToOne(cascade= CascadeType.ALL, mappedBy = "user", optional = false)
