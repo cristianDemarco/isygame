@@ -1,18 +1,38 @@
 import "../../utils/validations";
 import { validatePasswordMatch } from "../../utils/validations";
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
         if(validatePasswordMatch(password, confirmPassword)) return;
 
-        console.log("Dati corretti")
+        const requestOptions = {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({username:username, email: email, password: password})
+        };
+
+        fetch(`/api/users`, requestOptions)
+            .then(response => {
+                console.log(response.json)
+                console.log("Dati inviati!");
+                navigate("/login");
+            })
+            
+            .catch((err) => {
+                console.log(err.message);
+            });
     }
+
     return (
         <>
             <div id="container" className="d-flex justify-content-center align-items-center">
@@ -21,11 +41,11 @@ const SignupPage = () => {
                         <h2>Signup</h2>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Username</label>
-                            <input type="text" className="form-control" id="Username" minLength={3} maxLength={30} required></input>
+                            <input type="text" className="form-control" id="Username" minLength={3} maxLength={30} required onChange={(e) => setUsername(e.target.value)}></input>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputEmail" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="inputEmail" minLength={3} maxLength={50} aria-describedby="emailHelp" required></input>
+                            <input type="email" className="form-control" id="inputEmail" minLength={3} maxLength={50} aria-describedby="emailHelp" required onChange={(e) => setEmail(e.target.value)}></input>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputPassword" className="form-label">Password</label>
