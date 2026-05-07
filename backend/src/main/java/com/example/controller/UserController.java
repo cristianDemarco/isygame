@@ -11,11 +11,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping
-    public User createUser(@RequestBody User user){
-        return userService.saveUserWithCart(user);
-    }
-
     @GetMapping("/{id}")
     public User getuser(@PathVariable Long id){
         return userService.getUserById(id);
