@@ -18,10 +18,10 @@ const SignupPage = () => {
         const requestOptions = {
             method: "POST",
             headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({username:username, email: email, password: password})
+            body: JSON.stringify({nickname:username, email: email, password: password})
         };
 
-        fetch(`/api/users`, requestOptions)
+        fetch(`/api/auth/signup`, requestOptions)
             .then(response => {
                 console.log(response.json)
                 console.log("Dati inviati!");

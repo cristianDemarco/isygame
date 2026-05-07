@@ -5,7 +5,6 @@ import LoginPage from './pages/LoginPage/LoginPage'
 import SignupPage from './pages/SignupPage/SignupPage'
 
 function App() {
-
   return (
     <>
       <div className="row">

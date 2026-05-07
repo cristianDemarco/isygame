@@ -43,7 +43,7 @@ public class AuthenticationService {
         Cart cart = new Cart();
         cart.setUser(user);
         user.setCart(cart);
-
+        
         return userRepository.save(user);
     }
 
