@@ -8,7 +8,7 @@ const LoginPage = () => {
         email: "",
         password: ""
     });
-    
+
     const navigate = useNavigate();
     const {login}=useAuth();
 
@@ -42,6 +42,7 @@ const LoginPage = () => {
             <div id="container" className="d-flex justify-content-center align-items-center">
                 <div className="col-4">
                     <form className="mx-5" onSubmit={handleSubmit}>
+                        <h2>Login</h2>
                         <div className="mb-3">
                             <label htmlFor="inputEmail" className="form-label">Email address</label>
                             <input name="email" type="email" className="form-control" id="inputEmail" minLength={3} maxLength={50} aria-describedby="emailHelp" required value={formData.email} onChange={handleChange}></input>

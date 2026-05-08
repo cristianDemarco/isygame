@@ -1,13 +1,19 @@
+import { useNavigate } from "react-router-dom"; 
+
 const Navbar = () => {
+    const navigate = useNavigate();
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+        navigate("/home");
+    }
     return (
         <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+                <a className="navbar-brand mx-3" onClick={handleClick}>
                     <img src="src/assets/logo-isygame.png" alt="Logo" width="100" height="100" className="d-inline-block align-text-middle"></img>
                     <h3 className="d-inline-block">Isygame</h3>
                 </a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
+                <button className="navbar-toggler mx-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div className="offcanvas-header">

@@ -7,12 +7,13 @@ import SignupPage from './pages/SignupPage/SignupPage'
 function App() {
   return (
     <>
-      <div className="row">
-        <Navbar></Navbar>
-      </div>
       <BrowserRouter>
+        <div className="row">
+          <Navbar></Navbar>
+        </div>
         <Routes>
-            <Route path="/" element={<HomePage/>} />
+
+            <Route path="/home" element={<HomePage/>} />
             <Route path="/login" element={<LoginPage/>} />
             <Route path="/signup" element={<SignupPage/>} />
         </Routes>

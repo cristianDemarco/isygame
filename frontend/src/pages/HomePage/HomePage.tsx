@@ -11,6 +11,7 @@ function HomePage(){
 
     return (
         <>
+            <h1 className="row d-flex justify-content-center mt-5">Browse Our Collection</h1>
             <ProductsLines page={page} setHasMore={handleHasMore}></ProductsLines>
             {
                 hasMore && <div className="row d-flex justify-content-center">
