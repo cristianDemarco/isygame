@@ -24,7 +24,6 @@ const SignupPage = () => {
         fetch(`/api/auth/signup`, requestOptions)
             .then(response => {
                 console.log(response.json)
-                console.log("Dati inviati!");
                 navigate("/login");
             })
             
