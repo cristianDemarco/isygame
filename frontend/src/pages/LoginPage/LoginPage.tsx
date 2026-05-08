@@ -4,10 +4,20 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from 'react';
 
 const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
+    
     const navigate = useNavigate();
     const {login}=useAuth();
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -15,16 +25,13 @@ const LoginPage = () => {
         const requestOptions = {
             method: "POST",
             headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({email: email, password: password})
+            body: JSON.stringify({email: formData.email, password: formData.password})
         };
 
         fetch("api/auth/login", requestOptions)
         .then(response => response.json())
         .then(data =>{
             login(data);
-            console.log("Logged in!");
-            console.log(data);
-
             navigate("/");
         })
         .catch(err => console.log(err))
@@ -37,12 +44,12 @@ const LoginPage = () => {
                     <form className="mx-5" onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="inputEmail" className="form-label">Email address</label>
-                            <input type="email" className="form-control" id="inputEmail" minLength={3} maxLength={50} aria-describedby="emailHelp" required onChange={(e) => setEmail(e.target.value)}></input>
+                            <input name="email" type="email" className="form-control" id="inputEmail" minLength={3} maxLength={50} aria-describedby="emailHelp" required value={formData.email} onChange={handleChange}></input>
                             <div className="form-text">We'll never share your email with anyone else.</div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputPassword" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="inputPassword" minLength={8} maxLength={50} required onChange={(e) => setPassword(e.target.value)}></input>
+                            <input name="password" type="password" className="form-control" id="inputPassword" minLength={8} maxLength={50} required value={formData.password} onChange={handleChange}></input>
                         </div>
                         <div className="w-100 d-flex justify-content-center">
                             <button type="submit" className="btn btn-primary px-5">Submit</button>
