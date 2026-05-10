@@ -2,6 +2,7 @@ import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from 'react';
+import { type UserDTO } from "../../DTOs/UserDTO";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
     const {login}=useAuth();
+    const {storeUserInfo}=useAuth();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -19,7 +21,26 @@ const LoginPage = () => {
         })
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const fetchUserInfo = () => {
+        const token = localStorage.getItem("token");
+        const requestOptions = {
+            method: "GET",
+            headers: {"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
+        }
+
+        fetch("/api/users/me", requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            const user: UserDTO = {
+                email: data.email,
+                nickname: data.nickname
+            }; 
+            localStorage.setItem("email", user.email)
+            storeUserInfo(user.nickname, user.email);
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const requestOptions = {
@@ -28,13 +49,12 @@ const LoginPage = () => {
             body: JSON.stringify({email: formData.email, password: formData.password})
         };
 
-        fetch("api/auth/login", requestOptions)
-        .then(response => response.json())
-        .then(data =>{
-            login(data);
-            navigate("/");
-        })
-        .catch(err => console.log(err))
+        const response = await fetch("api/auth/login", requestOptions);
+        const data = await response.json();
+
+        login(data.token);    
+        fetchUserInfo();        
+        navigate("/home");
     }
 
     return (

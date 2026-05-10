@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.DTOs.UserDTO;
 import com.example.model.User;
 import com.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,5 +13,12 @@ public class UserService {
 
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
+    }
+    public UserDTO getUserInfo(String email){
+        User user = userRepository.findByEmail(email).orElse(null);
+        return new UserDTO(
+                user.getEmail(), 
+                user.getNickname()
+        );
     }
 }

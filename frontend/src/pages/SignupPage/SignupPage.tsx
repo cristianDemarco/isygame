@@ -32,8 +32,7 @@ const SignupPage = () => {
         };
 
         fetch(`/api/auth/signup`, requestOptions)
-            .then(response => {
-                console.log(response.json)
+            .then(() => {
                 navigate("/login");
             })
             

@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom"; 
+import { useAuth} from "../context/AuthContext";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        navigate("/home");
-    }
+    const token = localStorage.getItem("token");
+    const nickname = localStorage.getItem("nickname");
+
+    const {logout}=useAuth();
+    
     return (
         <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">
             <div className="container-fluid">
-                <a className="navbar-brand mx-3" onClick={handleClick}>
+                <a className="navbar-brand mx-3" onClick={()=>{navigate("/home")}}>
                     <img src="src/assets/logo-isygame.png" alt="Logo" width="100" height="100" className="d-inline-block align-text-middle"></img>
                     <h3 className="d-inline-block">Isygame</h3>
                 </a>
@@ -17,7 +20,10 @@ const Navbar = () => {
                 </button>
                 <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Isygame</h5>
+                    {token
+                    ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {nickname}</h4>
+                    : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, log in</h4>
+                    }
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
@@ -31,6 +37,9 @@ const Navbar = () => {
                     <li className="nav-item">
                         <a className="nav-link" href="#">Profile</a>
                     </li>
+                    {token != null && <li className="nav-item">
+                        <a className="nav-link" onClick={logout}>Logout</a>
+                    </li>}
                     </ul>
                     <form className="d-flex mt-3" role="search">
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
