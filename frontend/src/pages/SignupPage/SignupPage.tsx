@@ -12,18 +12,21 @@ const SignupPage = () => {
     });
 
     const navigate = useNavigate();
+    const [error, setError]=useState("");
+    const passwordValidation = validatePasswordMatch(formData.password, formData.confirmPassword);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         })
+        setError("");
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
-        if(validatePasswordMatch(formData.password, formData.confirmPassword)) return;
+        if(passwordValidation) return;
 
         const requestOptions = {
             method: "POST",
@@ -31,14 +34,13 @@ const SignupPage = () => {
             body: JSON.stringify({nickname:formData.nickname, email: formData.email, password: formData.password})
         };
 
-        fetch(`/api/auth/signup`, requestOptions)
-            .then(() => {
-                navigate("/login");
-            })
-            
-            .catch((err) => {
-                console.log(err.message);
-            });
+        const response = await fetch(`/api/auth/signup`, requestOptions)
+        const data = await response.json();
+        if(response.ok){
+            navigate("/login");
+        } else {
+            setError(data.message);
+        }
     }
 
     return (
@@ -63,7 +65,8 @@ const SignupPage = () => {
                             <label htmlFor="confirmPassword" className="form-label">Confirm password</label>
                             <input name="confirmPassword" type="password" className="form-control" id="confirmPassword" required value={formData.confirmPassword} onChange={handleChange}></input>
                         </div>
-                        <p className="text-danger">{validatePasswordMatch(formData.password, formData.confirmPassword)}</p>
+                        <p className="text-danger">{passwordValidation}</p>
+                        <p className="text-danger">{error}</p>
                         <div className="w-100 d-flex justify-content-center">
                             <button type="submit" className="btn btn-primary px-5">Submit</button>
                         </div>

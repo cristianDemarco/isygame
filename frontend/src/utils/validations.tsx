@@ -1,4 +1,4 @@
 export function validatePasswordMatch(password: string, confirmPassword: string){
-    if(password != confirmPassword) return "Passwords doesn't match";
+    if(password != confirmPassword) return "Passwords don't match";
     return null;
 }

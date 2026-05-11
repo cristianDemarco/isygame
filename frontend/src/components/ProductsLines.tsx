@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Product from "./Product";
-import type { ProductDTO } from "../DTOs/ProductDTO";
+import type { ProductDTO } from "../types/ProductDTO";
 
 const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boolean) => void}) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);

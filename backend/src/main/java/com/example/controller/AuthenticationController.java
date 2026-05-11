@@ -1,8 +1,8 @@
 package com.example.controller;
 
-import com.example.DTOs.LoginResponse;
-import com.example.DTOs.LoginUserDTO;
-import com.example.DTOs.RegisterUserDTO;
+import com.example.DTOs.response.LoginResponseDTO;
+import com.example.DTOs.request.LoginUserDTO;
+import com.example.DTOs.request.RegisterUserDTO;
 import com.example.model.User;
 import com.example.service.AuthenticationService;
 import com.example.service.JwtService;
@@ -28,11 +28,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> register(@RequestBody LoginUserDTO loginUserDTO){
+    public ResponseEntity<LoginResponseDTO> register(@RequestBody LoginUserDTO loginUserDTO){
         User authenticatedUser = authenticationService.authenticate(loginUserDTO);
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        LoginResponse loginResponse = new LoginResponse();
+        LoginResponseDTO loginResponse = new LoginResponseDTO();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 

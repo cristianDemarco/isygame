@@ -1,11 +1,11 @@
 package com.example.service;
 
-import com.example.DTOs.LoginUserDTO;
+import com.example.DTOs.request.LoginUserDTO;
 import com.example.exception.BadUserInputException;
 import com.example.exception.InvalidCredentialsException;
 import com.example.model.Cart;
 import com.example.model.User;
-import com.example.DTOs.RegisterUserDTO;
+import com.example.DTOs.request.RegisterUserDTO;
 import com.example.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

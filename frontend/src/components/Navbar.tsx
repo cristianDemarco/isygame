@@ -22,7 +22,7 @@ const Navbar = () => {
                 <div className="offcanvas-header">
                     {token
                     ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {nickname}</h4>
-                    : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, log in</h4>
+                    : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, login</h4>
                     }
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
@@ -30,6 +30,9 @@ const Navbar = () => {
                     <ul className="navbar-nav justify-content-end flex-grow-1 px-3">
                     <li className="nav-item">
                         <a className="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" onClick={()=>{navigate("/signup")}}>Sign up</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">Cart</a>

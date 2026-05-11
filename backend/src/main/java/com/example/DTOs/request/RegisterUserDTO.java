@@ -1,4 +1,4 @@
-package com.example.DTOs;
+package com.example.DTOs.request;
 
 public class RegisterUserDTO {
     private String email;

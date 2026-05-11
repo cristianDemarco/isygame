@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.DTOs.ProductDTO;
+import com.example.DTOs.response.ProductDTO;
 import com.example.model.Product;
 import com.example.repository.ProductRepository;
 

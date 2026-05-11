@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {type ProductDTO} from "../DTOs/ProductDTO";
+import {type ProductDTO} from "../types/ProductDTO";
 
 type ProductProps = {
     product: ProductDTO;

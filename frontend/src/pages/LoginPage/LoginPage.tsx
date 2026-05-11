@@ -2,7 +2,7 @@ import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from 'react';
-import { type UserDTO } from "../../DTOs/UserDTO";
+import { type UserDTO } from "../../types/UserDTO";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({

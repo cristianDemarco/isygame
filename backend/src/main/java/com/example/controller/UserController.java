@@ -1,8 +1,7 @@
 package com.example.controller;
 
-import com.example.DTOs.UserDTO;
+import com.example.DTOs.response.UserDTO;
 import com.example.model.User;
-import com.example.service.AuthenticationService;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

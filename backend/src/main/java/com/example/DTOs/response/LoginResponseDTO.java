@@ -1,6 +1,6 @@
-package com.example.DTOs;
+package com.example.DTOs.response;
 
-public class LoginResponse {
+public class LoginResponseDTO {
     private String token;
     private long expiresIn;
 
