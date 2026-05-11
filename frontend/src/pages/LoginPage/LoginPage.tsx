@@ -13,6 +13,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const {login}=useAuth();
     const {storeUserInfo}=useAuth();
+    const [error, setError]=useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -51,10 +52,13 @@ const LoginPage = () => {
 
         const response = await fetch("api/auth/login", requestOptions);
         const data = await response.json();
-
-        login(data.token);    
-        fetchUserInfo();        
-        navigate("/home");
+        if (response.ok){
+            login(data.token);    
+            fetchUserInfo();        
+            navigate("/home");
+        } else {
+            setError(data.message);
+        }
     }
 
     return (
@@ -72,6 +76,7 @@ const LoginPage = () => {
                             <label htmlFor="inputPassword" className="form-label">Password</label>
                             <input name="password" type="password" className="form-control" id="inputPassword" minLength={8} maxLength={50} required value={formData.password} onChange={handleChange}></input>
                         </div>
+                        <p className="text-danger">{error}</p>
                         <div className="w-100 d-flex justify-content-center">
                             <button type="submit" className="btn btn-primary px-5">Submit</button>
                         </div>
