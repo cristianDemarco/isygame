@@ -19,43 +19,43 @@ const Navbar = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div className="offcanvas-header">
-                    {token
-                    ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {nickname}</h4>
-                    : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, login</h4>
-                    }
-                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div className="offcanvas-body">
-                    <ul className="navbar-nav justify-content-end flex-grow-1 px-3">
-                    <li className="nav-item">
-                        <a className="nav-link active" aria-current="page" onClick={()=>{navigate("/home")}}>Home</a>
-                    </li>
-                    {token
-                    ? <>
-                    {/*<li className="nav-item">
-                        <a className="nav-link" href="#">Cart</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Profile</a>
-                    </li>*/}
-                    <li className="nav-item">
-                        <a className="nav-link" onClick={logout}>Logout</a>
-                    </li>
-                    </>
-                    :
-                    <li className="nav-item">
-                        <a className="nav-link" onClick={()=>{navigate("/signup")}}>Sign up</a>
-                    </li>
-                    }
-                    </ul>
-                    {/*
-                    <form className="d-flex mt-3" role="search">
-                    <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button className="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                    */}
-                </div>
+                    <div className="offcanvas-header">
+                        {token
+                        ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {nickname}</h4>
+                        : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, login</h4>
+                        }
+                        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div className="offcanvas-body">
+                        <ul className="navbar-nav justify-content-end flex-grow-1 px-3">
+                        <li className="nav-item">
+                            <a className="nav-link active" aria-current="page" onClick={()=>{navigate("/home")}}>Home</a>
+                        </li>
+                        {token
+                        ? <>
+                        {/*<li className="nav-item">
+                            <a className="nav-link" href="#">Cart</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">Profile</a>
+                        </li>*/}
+                        <li className="nav-item">
+                            <a className="nav-link" onClick={logout}>Logout</a>
+                        </li>
+                        </>
+                        :
+                        <li className="nav-item">
+                            <a className="nav-link" onClick={()=>{navigate("/signup")}}>Sign up</a>
+                        </li>
+                        }
+                        </ul>
+                        {/*
+                        <form className="d-flex mt-3" role="search">
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button className="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                        */}
+                    </div>
                 </div>
             </div>
         </nav>

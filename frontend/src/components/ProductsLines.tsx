@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Product from "./Product";
+import Product from "./product/Product";
 import type { ProductDTO } from "../types/ProductDTO";
 
 const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boolean) => void}) => {
