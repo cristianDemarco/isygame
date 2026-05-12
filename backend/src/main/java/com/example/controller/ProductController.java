@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDTO> getProducts(@RequestParam int page, @RequestParam int limit){
+    public Page<ProductDTO> getProducts(@RequestParam int page, @RequestParam int limit){
         return productService.getProducts(page, limit);
     }
 

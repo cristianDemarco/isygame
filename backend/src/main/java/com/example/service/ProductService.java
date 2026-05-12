@@ -4,8 +4,6 @@ import com.example.DTOs.response.ProductDTO;
 import com.example.model.Product;
 import com.example.repository.ProductRepository;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -38,19 +36,11 @@ public class ProductService {
         return product.getImage();
     }
 
-    public List<ProductDTO> getProducts(int pageNum, int limit){
+    public Page<ProductDTO> getProducts(int pageNum, int limit){
         Pageable page = PageRequest.of(pageNum, limit);
-        Page<Product> products = productRepository.findAll(page);
-
-        return products.getContent()
-            .stream()
-            .map(
-            product -> new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPrice()
-            )
-        ).toList();
+        Page<ProductDTO> products = productRepository.findAll(page).map(product -> new ProductDTO(
+                product.getId(), product.getName(), product.getDescription(), product.getPrice()
+        ));
+        return products;
     }
 }

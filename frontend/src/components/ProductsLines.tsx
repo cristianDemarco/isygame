@@ -9,9 +9,9 @@ const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boo
     useEffect(() => {
             fetch(`/api/products?page=${page}&limit=${LIMIT}`)
                 .then(response => response.json())
-                .then(newProducts => {
-                    setProducts([...products, ...newProducts]);
-                    setHasMore(newProducts.length === LIMIT);
+                .then(page => {
+                    setProducts([...products, ...page.content]);
+                    setHasMore(!page.last);
                 })
                 .catch((err) => {
                     console.log(err.message);
