@@ -4,15 +4,20 @@ import ProductsLines from '../../components/ProductsLines';
 function HomePage(){
     const [page, setPageNum] = useState(0);
     const [hasMore, setHasMore] = useState(false);
+    const [hasProducts, setHasProducts] = useState(false);
 
     const handleHasMore = (data: boolean)=>{
         setHasMore(data);
     };
 
+    const handleHasProducts = (data: boolean)=>{
+        setHasProducts(data);
+    };
+
     return (
         <>
-           {hasMore && <h1 className="row d-flex justify-content-center mt-5">Browse Our Collection</h1>}
-            <ProductsLines page={page} setHasMore={handleHasMore}></ProductsLines>
+           {hasProducts && <h1 className="row d-flex justify-content-center mt-5">Browse Our Collection</h1>}
+            <ProductsLines page={page} setHasMore={handleHasMore} setHasProducts={handleHasProducts}></ProductsLines>
             {
                 hasMore && <div className="row d-flex justify-content-center">
                 <div className="col text-center">

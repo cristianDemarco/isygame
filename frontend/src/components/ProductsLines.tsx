@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Product from "./product/Product";
 import type { ProductDTO } from "../types/ProductDTO";
 
-const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boolean) => void}) => {
+const ProductsLines = ({page, setHasMore, setHasProducts}: {page: number, setHasMore: (data: boolean) => void, setHasProducts: (data: boolean) => void}) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const LIMIT = 8;
@@ -14,6 +14,7 @@ const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boo
                 .then(page => {
                     setProducts([...products, ...page.content]);
                     setHasMore(!page.last);
+                    setHasProducts(page.content.length > 0);
                 })
                 .catch((err) => {
                     console.log(err.message);
