@@ -4,9 +4,11 @@ import type { ProductDTO } from "../types/ProductDTO";
 
 const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boolean) => void}) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
+    const [loading, setLoading] = useState(false);
     const LIMIT = 8;
 
     useEffect(() => {
+            setLoading(true);
             fetch(`/api/products?page=${page}&limit=${LIMIT}`)
                 .then(response => response.json())
                 .then(page => {
@@ -15,6 +17,9 @@ const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boo
                 })
                 .catch((err) => {
                     console.log(err.message);
+                })
+                .finally(()=>{
+                    setLoading(false);
                 })
         }, [page]);
 
@@ -32,9 +37,19 @@ const ProductsLines = ({page, setHasMore}: {page: number, setHasMore: (data: boo
         );
     } else {
         return (
-        <div className="row text-center my-5">
-                <h3>There are no products available</h3>
-        </div>)
+            <div className="row my-5">
+                <div className="col my-4 d-flex justify-content-around">
+                {loading ?
+                <>
+                    <div className="spinner-border text-success" style={{width: "4rem", height:"4rem"}} role="status">
+                        <span className="sr-only"></span>
+                    </div>
+                </>
+                : <h3>There are no products available</h3>
+                }
+                </div>
+            </div> 
+        )
     }
 }
 export default ProductsLines;
