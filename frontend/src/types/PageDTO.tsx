@@ -1,4 +1,4 @@
-export interface Page<T> {
+export interface PageDTO<T> {
     content: T[];
     totalPages: number;
     totalElements: number;

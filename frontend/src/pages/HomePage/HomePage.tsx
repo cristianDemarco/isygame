@@ -1,34 +1,9 @@
-import { useState } from 'react';
-import ProductsLines from '../../components/ProductsLines';
+import Products from '../../components/Products';
 
 function HomePage(){
-    const [page, setPageNum] = useState(0);
-    const [hasMore, setHasMore] = useState(false);
-    const [hasProducts, setHasProducts] = useState(false);
-
-    const handleHasMore = (data: boolean)=>{
-        setHasMore(data);
-    };
-
-    const handleHasProducts = (data: boolean)=>{
-        setHasProducts(data);
-    };
-
     return (
         <>
-           {hasProducts && <h1 className="row d-flex justify-content-center mt-5">Browse Our Collection</h1>}
-            <ProductsLines page={page} setHasMore={handleHasMore} setHasProducts={handleHasProducts}></ProductsLines>
-            {
-                hasMore && <div className="row d-flex justify-content-center">
-                <div className="col text-center">
-                    {hasMore && <button type="button" className="btn btn-light text-center mb-5" onClick={
-                        () => {
-                            setPageNum(page+1);
-                        }
-                    }>Load more</button>}
-                </div>
-            </div>
-            }
+            <Products url={"api/products"} sectionTitle={"Browse Our Collection"}></Products>
         </>
         
     )

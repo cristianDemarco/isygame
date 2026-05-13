@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import Product from "./product/Product";
 import type { ProductDTO } from "../types/ProductDTO";
+import type { PageDTO } from "../types/PageDTO";
 
-const ProductsLines = ({page, setHasMore, setHasProducts}: {page: number, setHasMore: (data: boolean) => void, setHasProducts: (data: boolean) => void}) => {
+const Products = ({url, options, sectionTitle}:{url:string, options?: RequestInit, sectionTitle:string}) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPageNum] = useState(0);
+    const [page, setPage] = useState<PageDTO<ProductDTO>>();
+    const [pageNum, setPageNum] = useState(0);
     const LIMIT = 8;
 
     useEffect(() => {
             setLoading(true);
-            fetch(`/api/products?page=${page}&limit=${LIMIT}`)
+            fetch(`${url}?page=${pageNum}&limit=${LIMIT}`, options)
                 .then(response => response.json())
                 .then(page => {
+                    setPage(page);
                     setProducts([...products, ...page.content]);
-                    setHasMore(!page.last);
-                    setHasProducts(page.content.length > 0);
                 })
                 .catch((err) => {
                     console.log(err.message);
@@ -23,11 +24,26 @@ const ProductsLines = ({page, setHasMore, setHasProducts}: {page: number, setHas
                 .finally(()=>{
                     setLoading(false);
                 })
-        }, [page]);
+        }, [pageNum]);
 
-    if(products.length > 0){
-        return (
+    if(!page){
+        return (<><div className="row my-5">
+            <div className="col my-4 d-flex justify-content-around">
+                {loading ?
+                <>
+                    <div className="spinner-border text-success" style={{width: "4rem", height:"4rem"}} role="status">
+                        <span className="sr-only"></span>
+                    </div>
+                </>
+                : <h3>There are no products available</h3>
+                }
+            </div>
+        </div></>)
+    }
+
+    return (
             <>
+                {page.content.length>0 && <h1 className="row d-flex justify-content-center mt-5">{sectionTitle}</h1>}
                 <div className="container">
                     <div className="row my-5 d-flex justify-content-start">
                         {products.map((value, index) => (
@@ -37,32 +53,16 @@ const ProductsLines = ({page, setHasMore, setHasProducts}: {page: number, setHas
                         ))}
                     </div>
                 </div>
-                hasMore && <div className="row d-flex justify-content-center">
+                {!page.last && <div className="row d-flex justify-content-center">
                     <div className="col text-center">
-                        {hasMore && <button type="button" className="btn btn-light text-center mb-5" onClick={
+                        {<button type="button" className="btn btn-light text-center mb-5" onClick={
                             () => {
-                                setPageNum(page+1);
+                                setPageNum(pageNum+1);
                             }
                         }>Load more</button>}
                     </div>
-                </div>
+                </div>}
             </>
         );
-    } else {
-        return (
-            <div className="row my-5">
-                <div className="col my-4 d-flex justify-content-around">
-                {loading ?
-                <>
-                    <div className="spinner-border text-success" style={{width: "4rem", height:"4rem"}} role="status">
-                        <span className="sr-only"></span>
-                    </div>
-                </>
-                : <h3>There are no products available</h3>
-                }
-                </div>
-            </div> 
-        )
-    }
 }
-export default ProductsLines;
+export default Products;
