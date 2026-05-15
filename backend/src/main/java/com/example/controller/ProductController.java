@@ -4,8 +4,6 @@ import com.example.DTOs.response.ProductDTO;
 import com.example.model.Product;
 import com.example.service.ProductService;
 
-import java.util.List;
-
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,8 +25,8 @@ public class ProductController {
         try{
             product.setImage(image.getBytes());
         }catch(Exception e){
-            System.out.println(e);
-        };
+            System.out.println(e.getMessage());
+        }
         return productService.saveProduct(product);
     }
 
@@ -39,7 +37,14 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable Long id){
-        return productService.getProduct(id);
+        Product product = productService.getProduct(id);
+
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice()
+        );
     }
 
     @GetMapping("/{id}/image")

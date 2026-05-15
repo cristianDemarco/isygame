@@ -14,7 +14,7 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public Cart getCartByUserId(Long id){
-        return cartRepository.findByUser_Id(id);
+    public Cart getCartByEmail(String email){
+        return cartRepository.findByUser_Email(email);
     }
 }

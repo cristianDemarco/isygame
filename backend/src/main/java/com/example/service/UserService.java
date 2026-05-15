@@ -14,11 +14,7 @@ public class UserService {
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }
-    public UserDTO getUserInfo(String email){
-        User user = userRepository.findByEmail(email).orElse(null);
-        return new UserDTO(
-                user.getEmail(), 
-                user.getNickname()
-        );
+    public User getUserInfo(String email){
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

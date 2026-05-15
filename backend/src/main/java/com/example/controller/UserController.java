@@ -20,8 +20,11 @@ public class UserController {
 
     @GetMapping("/me")
     public UserDTO me(Authentication authentication){
-        String email = authentication.getName();
+        User user = userService.getUserInfo(authentication.getName());
 
-        return userService.getUserInfo(email);
+        return new UserDTO(
+                user.getEmail(),
+                user.getNickname()
+        );
     }
 }

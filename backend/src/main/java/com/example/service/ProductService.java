@@ -19,15 +19,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public ProductDTO getProduct(Long id){
-        Product product = productRepository.findById(id).orElse(null);
-
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPrice()
-        );
+    public Product getProduct(Long id){
+        return productRepository.findById(id).orElse(null);
     }
 
     public byte[] getProductImage(Long id){
