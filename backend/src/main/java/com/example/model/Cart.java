@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,11 +30,6 @@ public class Cart {
     @NotNull
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name="cart_product",
-            joinColumns = @JoinColumn(name="cart_id"),
-            inverseJoinColumns = @JoinColumn(name="product_id")
-    )
-    private Set<Product> products = new HashSet<>();
+    @OneToMany(mappedBy = "cart", cascade = {CascadeType.MERGE})
+    private List<CartProduct> cartProducts = new ArrayList<>();
 }

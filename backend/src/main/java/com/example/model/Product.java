@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,6 +43,6 @@ public class Product {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Cart> carts = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.MERGE})
+    private List<CartProduct> cartProducts = new ArrayList<>();
 }
