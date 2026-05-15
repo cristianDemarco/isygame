@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/cart/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cart/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/cart/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

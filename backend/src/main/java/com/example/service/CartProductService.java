@@ -28,4 +28,8 @@ public class CartProductService {
     public void addProductToCart(Long productId, String email){
         cartProductRepository.save(getCartProduct(productId, email));
     }
+
+    public void deleteProductFromCart(Long productId, String email){
+        cartProductRepository.delete(getCartProduct(productId, email));
+    }
 }

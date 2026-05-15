@@ -19,8 +19,7 @@ public class CartController {
 
     @GetMapping
     public Cart getCart(Authentication authentication){
-        Cart cart = cartService.getCartByEmail(authentication.getName());
-        return cart;
+        return cartService.getCartByEmail(authentication.getName());
     }
 
     @PostMapping("/{productId}")
@@ -28,5 +27,12 @@ public class CartController {
         cartProductService.addProductToCart(productId, authentication.getName());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<HttpStatus> deleteProductFromCart(@PathVariable Long productId, Authentication authentication){
+        cartProductService.deleteProductFromCart(productId, authentication.getName());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
