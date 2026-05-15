@@ -17,12 +17,13 @@ public class CartController {
     @Autowired
     CartProductService cartProductService;
 
-    @GetMapping("/cart")
-    public Cart getCartById(Authentication authentication){
-        return cartService.getCartByEmail(authentication.getName());
+    @GetMapping
+    public Cart getCart(Authentication authentication){
+        Cart cart = cartService.getCartByEmail(authentication.getName());
+        return cart;
     }
 
-    @PostMapping("/product/{productId}")
+    @PostMapping("/{productId}")
     public ResponseEntity<HttpStatus> addProductToCart(@PathVariable Long productId, Authentication authentication){
         cartProductService.addProductToCart(productId, authentication.getName());
 
