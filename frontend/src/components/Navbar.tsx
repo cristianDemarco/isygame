@@ -33,9 +33,9 @@ const Navbar = () => {
                         </li>
                         {token
                         ? <>
-                        {/*<li className="nav-item">
-                            <a className="nav-link" href="#">Cart</a>
-                        </li>
+                        {<li className="nav-item">
+                            <a className="nav-link" onClick={()=>{navigate("/cart")}}>Cart</a>
+                        </li>/*
                         <li className="nav-item">
                             <a className="nav-link" href="#">Profile</a>
                         </li>*/}
