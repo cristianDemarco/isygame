@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -39,7 +41,7 @@ public class CartController {
     }
 
     @GetMapping("/products")
-    public Page<ProductDTO> getAllProductsFromCart(@RequestParam int page, @RequestParam int limit, Authentication authentication){
-        return cartProductService.getAllProductsFromCart(authentication.getName(), page, limit);
+    public List<ProductDTO> getAllProductsFromCart(Authentication authentication){
+        return cartProductService.getAllProductsFromCart(authentication.getName());
     }
 }

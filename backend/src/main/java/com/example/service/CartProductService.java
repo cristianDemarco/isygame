@@ -41,13 +41,11 @@ public class CartProductService {
         cartProductRepository.delete(getCartProduct(productId, email));
     }
 
-    public Page<ProductDTO> getAllProductsFromCart(String email, int pageNum, int limit){
-        Pageable page = PageRequest.of(pageNum, limit);
+    public List<ProductDTO> getAllProductsFromCart(String email){
         Cart cart = userService.getUserInfo(email).getCart();
         List<CartProduct> cartProducts = cart.getCartProducts();
-        List<ProductDTO> products = cartProducts.stream().map(CartProduct::getProduct).map(product -> new ProductDTO(
+        return cartProducts.stream().map(CartProduct::getProduct).map(product -> new ProductDTO(
                 product.getId(), product.getName(), product.getDescription(), product.getPrice()
         )).toList();
-        return new PageImpl<ProductDTO>(products, page, products.size());
     }
 }
