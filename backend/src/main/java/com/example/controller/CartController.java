@@ -1,9 +1,11 @@
 package com.example.controller;
 
+import com.example.DTOs.response.ProductDTO;
 import com.example.model.Cart;
 import com.example.service.CartProductService;
 import com.example.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -34,5 +36,10 @@ public class CartController {
         cartProductService.deleteProductFromCart(productId, authentication.getName());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/products")
+    public Page<ProductDTO> getAllProductsFromCart(@RequestParam int page, @RequestParam int limit, Authentication authentication){
+        return cartProductService.getAllProductsFromCart(authentication.getName(), page, limit);
     }
 }
