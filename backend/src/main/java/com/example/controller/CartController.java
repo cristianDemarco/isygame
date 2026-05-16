@@ -5,7 +5,6 @@ import com.example.model.Cart;
 import com.example.service.CartProductService;
 import com.example.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
