@@ -5,7 +5,7 @@ import type { PageDTO } from "../types/PageDTO";
 import Alert from "./Alert";
 import { useAuth } from "../context/AuthContext";
 
-const Products = ({ url, options, sectionTitle }: { url: string, options?: RequestInit, sectionTitle: string }) => {
+const Products = ({ url, options }: { url: string, options?: RequestInit }) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
@@ -56,7 +56,11 @@ const Products = ({ url, options, sectionTitle }: { url: string, options?: Reque
     return (
         <>
             {showAlert && <Alert message="Log in before adding products to the cart" color="red" />}
-            {page.content.length > 0 && <h1 className="row d-flex justify-content-center mt-5">{sectionTitle}</h1>}
+            {page.content.length > 0 && <>
+            <h1 className="row d-flex justify-content-center mt-5">Browse Our Collection</h1>
+            <h3 className="row d-flex justify-content-center mt-3">Ordered by name</h3>
+            </>}
+            
             <div className="container">
                 <div className="row my-5 d-flex justify-content-start">
                     {products.map(product => (

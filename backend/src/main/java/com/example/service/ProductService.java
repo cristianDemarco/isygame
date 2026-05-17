@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +31,7 @@ public class ProductService {
     }
 
     public Page<ProductDTO> getProducts(int pageNum, int limit){
-        Pageable page = PageRequest.of(pageNum, limit);
+        Pageable page = PageRequest.of(pageNum, limit, Sort.by("name"));
         Page<ProductDTO> products = productRepository.findAll(page).map(product -> new ProductDTO(
                 product.getId(), product.getName(), product.getDescription(), product.getPrice()
         ));

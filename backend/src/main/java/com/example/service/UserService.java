@@ -1,6 +1,5 @@
 package com.example.service;
 
-import com.example.DTOs.response.UserDTO;
 import com.example.model.User;
 import com.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
