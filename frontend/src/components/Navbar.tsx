@@ -3,10 +3,7 @@ import { useAuth} from "../context/AuthContext";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    const nickname = localStorage.getItem("nickname");
-
-    const {logout}=useAuth();
+    const { token, userInfo, logout } = useAuth();
     
     return (
         <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">
@@ -21,7 +18,7 @@ const Navbar = () => {
                 <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div className="offcanvas-header">
                         {token
-                        ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {nickname}</h4>
+                        ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {userInfo.nickname}</h4>
                         : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, login</h4>
                         }
                         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
