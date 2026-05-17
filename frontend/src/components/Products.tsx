@@ -8,6 +8,7 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
     const [pageNum, setPageNum] = useState(0);
+    const [refresh, setRefresh] = useState(false);
     const token = localStorage.getItem("token");
     const LIMIT = 8;
 
@@ -17,8 +18,13 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
                 .then(response => response.json())
                 .then(page => {
                     setPage(page);
-                    setProducts([...products, ...page.content]);
-                    return [...products, ...page.content];
+                    if(refresh){
+                        setProducts([...page.content]);
+                        return [...page.content];
+                    } else {
+                        setProducts([...products, ...page.content]);
+                        return [...products, ...page.content];
+                    }
                 })
                 .then((newProducts)=>{
                     if(token){
@@ -49,7 +55,7 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
                 .finally(()=>{
                     setLoading(false);
                 })
-        }, [pageNum]);
+        }, [pageNum, refresh]);
 
     if(!page){
         return (<><div className="row my-5">
@@ -73,7 +79,7 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
                     <div className="row my-5 d-flex justify-content-start">
                         {products.map((product) => (
                             <div className="col my-4 d-flex justify-content-around" key={product.id}>
-                                <Product product={product}/>
+                                <Product product={product} onToggleCart={()=>setRefresh(!refresh)}/>
                             </div>
                         ))}
                     </div>
