@@ -26,7 +26,7 @@ const Navbar = () => {
                     <div className="offcanvas-body">
                         <ul className="navbar-nav justify-content-end flex-grow-1 px-3">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" onClick={()=>{navigate("/home")}}>Home</a>
+                            <a className="nav-link" aria-current="page" onClick={()=>{navigate("/home")}}>Home</a>
                         </li>
                         {token
                         ? <>

@@ -1,0 +1,9 @@
+.cart-item-name {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+}
+.cart-item-price {
+    font-size: clamp(1rem, 2vw, 1.8rem);
+}
+.cart-item-icon {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+}

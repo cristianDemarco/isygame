@@ -64,7 +64,7 @@ const LoginPage = () => {
     return (
         <>
             <div id="container" className="d-flex justify-content-center align-items-center">
-                <div className="col-4">
+                <div className="col-lg-4 col-md-6 col-sm-8">
                     <form className="mx-5" onSubmit={handleSubmit}>
                         <h2>Login</h2>
                         <div className="mb-3">

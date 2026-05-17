@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { ProductDTO } from "../types/ProductDTO";
-import CartProduct from "../components/CartProduct";
+import CartProduct from "./CartProduct/CartProduct";
 
 const Cart = () => {
     const [cartProducts, setCartProducts] = useState<ProductDTO[]>([]);
@@ -55,7 +55,7 @@ const Cart = () => {
                     </div>
                 </div>
                 <div className="col text-center">
-                    {cartProducts.length>0 && <button type="button" className="btn btn-success text-center mb-5 w-25 btn-lg">Purchase</button>}
+                    {cartProducts.length>0 && <button type="button" className="btn btn-success text-center mb-5 w-25 btn-lg" style={{fontSize: "clamp(1rem, 2.5vw, 1.8rem)"}}>Purchase</button>}
                 </div>
             </>
         );
