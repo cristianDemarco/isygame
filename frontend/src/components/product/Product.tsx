@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import {type ProductDTO} from "../../types/ProductDTO";
 import {useAuth} from "../../context/AuthContext"
 import "./product.css";
@@ -6,9 +6,10 @@ import "./product.css";
 type ProductProps = {
     product: ProductDTO;
     onToggleCart: () => void;
+    showAlert: () => void;
 }
 
-const Product = ({product, onToggleCart}: ProductProps) => {
+const Product = ({product, onToggleCart, showAlert}: ProductProps) => {
     const [image, setImage] = useState<string | undefined>();
     const {token} = useAuth();
     useEffect(() => {
@@ -35,6 +36,8 @@ const Product = ({product, onToggleCart}: ProductProps) => {
             .catch(err => {
                 console.log(err.message);
             })
+        } else {
+            showAlert()
         }
     }
 

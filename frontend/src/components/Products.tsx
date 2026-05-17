@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Product from "./product/Product";
 import type { ProductDTO } from "../types/ProductDTO";
 import type { PageDTO } from "../types/PageDTO";
+import Alert from "./Alert"
 
 const Products = ({url, options, sectionTitle}:{url:string, options?: RequestInit, sectionTitle:string}) => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -9,6 +10,7 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
     const [pageNum, setPageNum] = useState(0);
     const [refresh, setRefresh] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const token = localStorage.getItem("token");
     const LIMIT = 8;
 
@@ -74,12 +76,13 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
 
     return (
             <>
+                {showAlert && <Alert message="Log in before adding products to the cart" color="red"></Alert>}
                 {page.content.length>0 && <h1 className="row d-flex justify-content-center mt-5">{sectionTitle}</h1>}
                 <div className="container">
                     <div className="row my-5 d-flex justify-content-start">
                         {products.map((product) => (
                             <div className="col my-4 d-flex justify-content-around" key={product.id}>
-                                <Product product={product} onToggleCart={()=>setRefresh(!refresh)}/>
+                                <Product product={product} onToggleCart={()=>setRefresh(!refresh)} showAlert={()=>setShowAlert(true)}/>
                             </div>
                         ))}
                     </div>
