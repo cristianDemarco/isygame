@@ -3,4 +3,5 @@ export interface ProductDTO{
     name: String,
     description: String,
     price: number,
+    inCart? : boolean
 }

@@ -8,7 +8,6 @@ type ProductProps = {
 
 const Product = ({product}: ProductProps) => {
     const [image, setImage] = useState<string | undefined>();
-    
         useEffect(() => {
                 fetch(`/api/products/${product.id}/image`)
                     .then(response => response.blob())

@@ -8,6 +8,7 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
     const [pageNum, setPageNum] = useState(0);
+    const token = localStorage.getItem("token");
     const LIMIT = 8;
 
     useEffect(() => {
@@ -17,6 +18,30 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
                 .then(page => {
                     setPage(page);
                     setProducts([...products, ...page.content]);
+                    return [...products, ...page.content];
+                })
+                .then((newProducts)=>{
+                    if(token){
+                        return fetch("api/cart/products", {
+                            method: "GET",
+                            headers: {"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
+                        })
+                        .then(response => {
+                            if(!response.ok) {
+                                console.log("Errore:", response.status);
+                                return;
+                            }
+                            return response.json()}
+                        )
+                        .then((data: ProductDTO[]) => {
+                            setProducts(
+                                newProducts.map((product: ProductDTO) => ({
+                                ...product,
+                                inCart: data.some(cartProduct => cartProduct.id === product.id)
+                                }))
+                            )
+                        })
+                    }
                 })
                 .catch((err) => {
                     console.log(err.message);
@@ -46,9 +71,9 @@ const Products = ({url, options, sectionTitle}:{url:string, options?: RequestIni
                 {page.content.length>0 && <h1 className="row d-flex justify-content-center mt-5">{sectionTitle}</h1>}
                 <div className="container">
                     <div className="row my-5 d-flex justify-content-start">
-                        {products.map((value, index) => (
-                            <div className="col my-4 d-flex justify-content-around" key={index}>
-                                <Product product={value}/>
+                        {products.map((product) => (
+                            <div className="col my-4 d-flex justify-content-around" key={product.id}>
+                                <Product product={product}/>
                             </div>
                         ))}
                     </div>
