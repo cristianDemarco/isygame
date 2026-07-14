@@ -52,7 +52,7 @@ const Product = ({ product, showAlert }: ProductProps) => {
                 className="btn button position-absolute top-0 end-0 border border-dark fs-4"
                 onClick={handleToggleCartButton}
             >
-                <i id="toggleCartIcon" className={"bi bi-" + (inCart ? "trash" : "bag-plus")} />
+                <i id="toggleCartIcon" className={"bi bi-" + (inCart ? "trash" : "cart")} />
             </button>
         </div>
     );
