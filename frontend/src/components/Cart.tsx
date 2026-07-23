@@ -26,6 +26,16 @@ const Cart = () => {
                     })
         }, [refresh]);
 
+    const handleDeleteAll = () => {
+        fetch((`/api/cart/all`), {
+            method:"DELETE",
+            headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err.message))
+        .finally(() => setRefresh(!refresh));
+    }
+
     if(!cartProducts){
         return (
         <><div className="row my-5">
@@ -54,8 +64,9 @@ const Cart = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="col text-center">
-                    {cartProducts.length>0 && <button type="button" className="btn btn-success text-center mb-5 w-25 btn-lg" style={{fontSize: "clamp(1rem, 2.5vw, 1.8rem)"}}>Purchase</button>}
+                <div className="col d-flex justify-content-center gap-5">
+                    {cartProducts.length>0 && <button type="button" className="btn btn-success mb-5 btn-md" style={{fontSize: "clamp(1rem, 2.5vw, 1.8rem)"}}>Purchase</button>}
+                    {cartProducts.length>0 && <button type="button" className="btn btn-danger mb-5 btn-md" style={{fontSize: "clamp(1rem, 2.5vw, 1.8rem)"}} onClick={handleDeleteAll}>Delete all</button>}
                 </div>
             </>
         );
