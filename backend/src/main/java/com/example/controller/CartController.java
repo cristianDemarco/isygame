@@ -39,6 +39,13 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @DeleteMapping("/all")
+    public ResponseEntity<HttpStatus> deleteAllProductsFromCart(Authentication authentication){
+        cartProductService.deleteAllProductsFromCart(authentication.getName());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @GetMapping("/products")
     public List<ProductDTO> getAllProductsFromCart(Authentication authentication){
         return cartProductService.getAllProductsFromCart(authentication.getName());

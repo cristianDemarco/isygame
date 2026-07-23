@@ -33,6 +33,12 @@ public class CartProductService {
         cartProductRepository.delete(getCartProduct(productId, email));
     }
 
+    public void deleteAllProductsFromCart(String email){
+        Cart cart = userService.getUserInfo(email).getCart();
+        List<CartProduct> cartProducts = cart.getCartProducts();
+        cartProducts.forEach((car)-> cartProductRepository.delete(car));
+    }
+
     public List<ProductDTO> getAllProductsFromCart(String email){
         Cart cart = userService.getUserInfo(email).getCart();
         List<CartProduct> cartProducts = cart.getCartProducts();
