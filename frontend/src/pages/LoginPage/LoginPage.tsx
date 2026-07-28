@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from 'react';
 import { type UserDTO } from "../../types/UserDTO";
+import { sendRequest } from "../../hooks/useApi";
+
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -11,8 +13,8 @@ const LoginPage = () => {
     });
 
     const navigate = useNavigate();
-    const {login}=useAuth();
-    const {storeUserInfo}=useAuth();
+    const {token}=useAuth();
+    const {login, storeUserInfo}=useAuth();
     const [error, setError]=useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,41 +24,36 @@ const LoginPage = () => {
         })
     }
 
-    const fetchUserInfo = () => {
-        const token = localStorage.getItem("token");
-        const requestOptions = {
-            method: "GET",
-            headers: {"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
-        }
-
-        fetch("/api/users/me", requestOptions)
+    const fetchUserInfo = (token: string) => {
+        console.log("token fetch user info: " + token)
+        sendRequest("GET", "users/me", undefined, token)
         .then(response => response.json())
         .then(data => {
             const user: UserDTO = {
                 email: data.email,
                 nickname: data.nickname
             }; 
-            localStorage.setItem("email", user.email)
             storeUserInfo(user.nickname, user.email);
         })
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const response = await sendRequest(
+            "POST",
+            "auth/login",
+            {email: formData.email, password: formData.password},
+            undefined
+        )
 
-        const requestOptions = {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({email: formData.email, password: formData.password})
-        };
-
-        const response = await fetch("api/auth/login", requestOptions);
         const data = await response.json();
-        if (response.ok){
+
+        if(response.ok){
             login(data.token);    
-            fetchUserInfo();        
+            fetchUserInfo(data.token);        
             navigate("/home");
-        } else {
+        }
+        else {
             setError(data.message);
         }
     }

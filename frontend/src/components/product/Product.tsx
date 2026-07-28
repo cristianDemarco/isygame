@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { type ProductDTO } from "../../types/ProductDTO";
 import { useAuth } from "../../context/AuthContext";
 import "./product.css";
+import { sendRequest } from "../../hooks/useApi";
 
 type ProductProps = {
     product: ProductDTO;
@@ -14,11 +15,12 @@ const Product = ({ product, showAlert }: ProductProps) => {
     const inCart = cartIds.has(product.id);
 
     useEffect(() => {
-        fetch(`/api/products/${product.id}/image`)
+            sendRequest(
+                "GET", `products/${product.id}/image`, undefined, undefined
+                )
             .then(response => response.blob())
             .then(blob => setImage(URL.createObjectURL(blob)))
-            .catch(err => console.log(err.message));
-    }, []);
+        }, []);
 
     const handleToggleCartButton = () => {
         if (!token) {
@@ -26,10 +28,7 @@ const Product = ({ product, showAlert }: ProductProps) => {
             return;
         }
 
-        fetch(`/api/cart/${product.id}`, {
-            method: inCart ? "DELETE" : "POST",
-            headers: { "Authorization": `Bearer ${token}` }
-        })
+        sendRequest(inCart ? "DELETE" : "POST", `cart/${product.id}`, undefined, token)
         .then(response => {
             if (!response.ok) throw new Error(`Error while ${inCart ? "removing" : "adding"} product`);
             if (inCart) removeFromCart(product.id);

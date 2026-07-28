@@ -1,29 +1,25 @@
 import { useState, useEffect } from "react";
 import type { ProductDTO } from "../types/ProductDTO";
 import CartProduct from "./CartProduct/CartProduct";
+import { sendRequest } from "../hooks/useApi";
+import { useAuth } from "../context/AuthContext";
 
 const Cart = () => {
     const [cartProducts, setCartProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    const token = localStorage.getItem("token");
-    const options = {
-        method:"GET",
-        headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
-    }
+    const { token } = useAuth();
+
     useEffect(() => {
-                setLoading(true);
-                fetch("/api/cart/products", options)
-                    .then(response => response.json())
-                    .then(data => {
-                        setCartProducts([...data]);
-                    })
-                    .catch((err) => {
-                        console.log(err.message);
-                    })
-                    .finally(()=>{
-                        setLoading(false);
-                    })
+            setLoading(true);
+            sendRequest("GET", "cart/products", undefined, token)
+            .then(response => response.json())
+            .then(data => {
+                setCartProducts([...data]);
+            })
+            .finally(()=>{
+                setLoading(false);
+            })
         }, [refresh]);
 
     const handleDeleteAll = () => {

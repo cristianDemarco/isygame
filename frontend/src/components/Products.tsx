@@ -4,8 +4,9 @@ import type { ProductDTO } from "../types/ProductDTO";
 import type { PageDTO } from "../types/PageDTO";
 import Alert from "./Alert";
 import { useAuth } from "../context/AuthContext";
+import { sendRequest } from "../hooks/useApi";
 
-const Products = ({ url, options }: { url: string, options?: RequestInit }) => {
+const Products = () => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
@@ -16,15 +17,19 @@ const Products = ({ url, options }: { url: string, options?: RequestInit }) => {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${url}?page=${pageNum}&limit=${LIMIT}`, options)
-            .then(response => response.json())
-            .then(page => {
-                setPage(page);
-                if (pageNum === 0) setProducts(page.content);
-                else setProducts(prev => [...prev, ...page.content]);
-            })
-            .catch(err => console.log(err.message))
-            .finally(() => setLoading(false));
+        sendRequest(
+            "GET",
+            `products?page=${pageNum}&limit=${LIMIT}`,
+            undefined,
+            undefined
+        )
+        .then(response => response.json())
+        .then(page => {
+            setPage(page);
+            if (pageNum === 0) setProducts(page.content);
+            else setProducts(prev => [...prev, ...page.content]);
+        })
+        .finally(() => setLoading(false));
     }, [pageNum]);
 
     useEffect(() => {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { ProductDTO } from "../../types/ProductDTO";
 import "./cartProduct.css"
+import {sendRequest} from "../../hooks/useApi";
+import { useAuth } from "../../context/AuthContext";
 
 type CartProductProps = {
     cartProduct: ProductDTO;
@@ -9,22 +11,19 @@ type CartProductProps = {
 
 const CartProduct = ({cartProduct,onDelete}:CartProductProps) => {
     const [image, setImage] = useState<string | undefined>();
-    const token = localStorage.getItem("token");
+    const { token } = useAuth();
         
     useEffect(() => {
-            fetch(`/api/products/${cartProduct.id}/image`)
-                .then(response => response.blob())
-                .then(blob => setImage(URL.createObjectURL(blob)))
-                .catch((err) => {
-                    console.log(err.message);
-                })
+            sendRequest(
+                "GET", `products/${cartProduct.id}/image`, undefined, undefined
+                )
+            .then(response => response.blob())
+            .then(blob => setImage(URL.createObjectURL(blob)))
         }, []);
 
     const handleDelete = () => {
-        fetch(`/api/cart/${cartProduct.id}`, {
-            method:"DELETE",
-            headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
-        }).then(() => onDelete());
+        sendRequest("DELETE", `cart/${cartProduct.id}`, undefined, token)
+        .then(() => onDelete());
     }
     
     return (

@@ -1,3 +1,4 @@
+import { sendRequest } from "../../hooks/useApi";
 import "../../utils/validations";
 import { validatePasswordMatch } from "../../utils/validations";
 import { useState } from 'react';
@@ -27,14 +28,12 @@ const SignupPage = () => {
         e.preventDefault();
 
         if(passwordValidation) return;
-
-        const requestOptions = {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({nickname:formData.nickname, email: formData.email, password: formData.password})
-        };
-
-        const response = await fetch(`/api/auth/signup`, requestOptions)
+        const response = await sendRequest(
+            "POST",
+            "auth/signup",
+            {nickname:formData.nickname, email: formData.email, password: formData.password},
+            undefined
+        )
         const data = await response.json();
         if(response.ok){
             navigate("/login");
