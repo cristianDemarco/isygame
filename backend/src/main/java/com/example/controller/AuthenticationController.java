@@ -1,37 +1,29 @@
 package com.example.controller;
 
-import com.example.DTOs.response.LoginResponseDTO;
+import com.example.DTOs.response.AuthResponseDTO;
 import com.example.DTOs.request.LoginUserDTO;
 import com.example.DTOs.request.RefreshTokenDTO;
 import com.example.DTOs.request.RegisterUserDTO;
 import com.example.model.RefreshToken;
 import com.example.model.User;
 import com.example.service.AuthenticationService;
-import org.springframework.security.core.Authentication;
-import com.example.service.JwtService;
 import com.example.service.RefreshTokenService;
 
-import java.net.http.HttpResponse;
+import lombok.RequiredArgsConstructor;
+
 import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
+@RequiredArgsConstructor
 public class AuthenticationController {
-    private final JwtService jwtService;
     private final AuthenticationService authenticationService;
     private final RefreshTokenService refreshTokenService;
-
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService, RefreshTokenService refreshTokenService) {
-        this.jwtService = jwtService;
-        this.authenticationService = authenticationService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDTO registerUserDTO) {
@@ -41,11 +33,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginUserDTO loginUserDTO) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginUserDTO loginUserDTO) {
         User authenticatedUser = authenticationService.authenticate(loginUserDTO);
         RefreshToken refreshToken = refreshTokenService.generateRefreshToken(authenticatedUser.getEmail());
 
-        LoginResponseDTO loginResponse = authenticationService.createAuthResponse(refreshToken);
+        AuthResponseDTO loginResponse = authenticationService.createAuthResponse(refreshToken);
 
         return ResponseEntity.ok(loginResponse);
     }
@@ -66,7 +58,7 @@ public class AuthenticationController {
         }
         refreshTokenService.updateRefreshToken(refreshToken);
 
-        LoginResponseDTO loginResponse = authenticationService.createAuthResponse(refreshToken);
+        AuthResponseDTO loginResponse = authenticationService.createAuthResponse(refreshToken);
 
         return ResponseEntity.ok(loginResponse);
     }

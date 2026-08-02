@@ -7,8 +7,11 @@ import com.example.model.Cart;
 import com.example.model.RefreshToken;
 import com.example.model.User;
 import com.example.DTOs.request.RegisterUserDTO;
-import com.example.DTOs.response.LoginResponseDTO;
+import com.example.DTOs.response.AuthResponseDTO;
 import com.example.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,26 +21,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
-
-    public AuthenticationService(
-            UserRepository userRepository,
-            AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder,
-            JwtService jwtService,
-            RefreshTokenService refreshTokenService
-    ){
-        this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     public User signup(RegisterUserDTO input){
         if(userRepository.existsByEmail(input.getEmail())){
@@ -72,13 +62,13 @@ public class AuthenticationService {
         return userRepository.findByEmail(input.getEmail()).orElseThrow();
     }
 
-    public LoginResponseDTO createAuthResponse(RefreshToken refreshToken){
+    public AuthResponseDTO createAuthResponse(RefreshToken refreshToken){
         
         RefreshToken newRefreshToken = refreshTokenService.getRefreshTokenByTokenString(refreshToken.getToken()).get();
         User user = userRepository.findByEmail(newRefreshToken.getUser().getEmail()).get();
         String jwtToken = jwtService.generateToken(user);
 
-        LoginResponseDTO loginResponse = new LoginResponseDTO();
+        AuthResponseDTO loginResponse = new AuthResponseDTO();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         loginResponse.setRefreshToken(refreshToken.getToken());

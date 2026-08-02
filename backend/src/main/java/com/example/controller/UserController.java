@@ -3,15 +3,17 @@ package com.example.controller;
 import com.example.DTOs.response.UserDTO;
 import com.example.model.User;
 import com.example.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     @GetMapping("/{id}")
     public User getuser(@PathVariable Long id){

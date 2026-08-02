@@ -6,19 +6,20 @@ import com.example.service.ProductService;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    @Autowired
-    ProductService productService;
+    private final ProductService productService;
 
     @PostMapping
     public Product createProduct(@RequestPart("product") Product product, @RequestPart("image") MultipartFile image){

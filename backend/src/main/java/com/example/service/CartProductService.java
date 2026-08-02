@@ -5,19 +5,19 @@ import com.example.model.Cart;
 import com.example.model.CartProduct;
 import com.example.model.Product;
 import com.example.repository.CartProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CartProductService {
-    @Autowired
-    private CartProductRepository cartProductRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductService productService;
+    private final CartProductRepository cartProductRepository;
+    private final UserService userService;
+    private final ProductService productService;
 
     public CartProduct getCartProduct(Long productId, String email){
         Cart cart = userService.getUserInfo(email).getCart();

@@ -4,20 +4,20 @@ import java.util.UUID;
 import java.time.Instant;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.model.RefreshToken;
 import com.example.repository.RefreshTokenRepository;
 import com.example.repository.UserRepository;
 
-@Service
-public class RefreshTokenService {
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+import lombok.RequiredArgsConstructor;
 
-    @Autowired
-    private UserRepository userRepository;
+@Service
+@RequiredArgsConstructor
+public class RefreshTokenService {
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    private final UserRepository userRepository;
 
     public RefreshToken generateRefreshToken(String email){
         RefreshToken refreshToken = new RefreshToken();
