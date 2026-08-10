@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import type { ProductDTO } from "../types/ProductDTO";
 import CartProduct from "./CartProduct/CartProduct";
-import { sendRequest } from "../hooks/useApi";
 import { useAuth } from "../context/AuthContext";
 
 const Cart = () => {
     const [cartProducts, setCartProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    const { token } = useAuth();
+    const { sendAuthRequest } = useAuth();
 
     useEffect(() => {
             setLoading(true);
-            sendRequest("GET", "cart/products", undefined, token)
+            sendAuthRequest("GET", "cart/products")
             .then(response => response.json())
             .then(data => {
                 setCartProducts([...data]);
@@ -23,10 +22,7 @@ const Cart = () => {
         }, [refresh]);
 
     const handleDeleteAll = () => {
-        fetch((`/api/cart/all`), {
-            method:"DELETE",
-            headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}
-        })
+        sendAuthRequest("DELETE", "cart/all")
         .then(response => response.json())
         .catch(err => console.log(err.message))
         .finally(() => setRefresh(!refresh));

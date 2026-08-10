@@ -3,7 +3,7 @@ import { useAuth} from "../context/AuthContext";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const { token, userInfo, logout } = useAuth();
+    const {accessToken, userInfo, logout } = useAuth();
     
     return (
         <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">
@@ -13,7 +13,7 @@ const Navbar = () => {
                     <h3 className="d-inline-block">Isygame</h3>
                 </a>
                 {
-                    token && (
+                    accessToken && (
                         <a className="navbar-brand fs-1 d-inline-flex align-items-center gap-2" onClick={()=>{navigate("/cart")}}>
                             <i className="bi bi-cart" />
                             <h3 className="m-0">Cart</h3>
@@ -24,7 +24,7 @@ const Navbar = () => {
                 </button>
                 <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div className="offcanvas-header">
-                        {token
+                        {accessToken
                         ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {userInfo.nickname}</h4>
                         : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, login</h4>
                         }
@@ -35,7 +35,7 @@ const Navbar = () => {
                         <li className="nav-item">
                             <a className="nav-link" aria-current="page" onClick={()=>{navigate("/home")}}>Home</a>
                         </li>
-                        {token
+                        {accessToken
                         ? <>
                         {<li className="nav-item">
                             <a className="nav-link" onClick={()=>{navigate("/cart")}}>Cart</a>

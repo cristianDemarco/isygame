@@ -8,7 +8,7 @@ import lombok.Data;
 @NoArgsConstructor
 @Data
 public class AuthResponseDTO {
-    private String token;
+    private String accessToken;
     private long expiresIn;
     private String refreshToken;
 }

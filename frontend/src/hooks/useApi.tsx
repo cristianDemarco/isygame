@@ -2,13 +2,12 @@ import type {ApiMethod} from "../types/ApiMethod";
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL as string;
 
-export const sendRequest = (
+export const sendRequest = async (
     method: ApiMethod,
     path: string,
     body ?: any,
     authToken ?: string |null   
 ) => {
-    console.log("authToken:" + authToken);
     return fetch(
         apiUrl + path,
         {
@@ -20,11 +19,12 @@ export const sendRequest = (
             },
         }).then((response => {
             if(response.status >= 400){
-                console.log(response);
-                return response
+                throw {
+                    status: response.status,
+                }
             } else {
                 return response;
             }
         })
     );
-};    
+};

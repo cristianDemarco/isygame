@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.model.RefreshToken;
+import com.example.model.User;
 import com.example.repository.RefreshTokenRepository;
-import com.example.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
+    private int expiryTime = 1000*60*60*24*7;
 
-    private final UserRepository userRepository;
 
-    public RefreshToken generateRefreshToken(String email){
+    public RefreshToken generateRefreshToken(User user){
         RefreshToken refreshToken = new RefreshToken();
                 
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(Instant.now().plusMillis(1000*60*60*24*7));
-        refreshToken.setUser(userRepository.findByEmail(email).orElseThrow());
+        refreshToken.setExpiryDate(Instant.now().plusMillis(expiryTime));
+        refreshToken.setUser(user);
    
         return refreshTokenRepository.save(refreshToken);
     }
@@ -33,8 +33,8 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(refreshTokenString);
     }
 
-    public Optional<RefreshToken> getRefreshTokenByUserEmail(String email){
-        return refreshTokenRepository.findByUser(email);
+    public Optional<RefreshToken> getRefreshTokenByUser(User user){
+        return refreshTokenRepository.findByUser(user);
     }
 
     public RefreshToken updateRefreshToken(RefreshToken refreshToken){

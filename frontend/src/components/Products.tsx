@@ -12,17 +12,12 @@ const Products = () => {
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
     const [pageNum, setPageNum] = useState(0);
     const [showAlert, setShowAlert] = useState(false);
-    const { token, initCartIds } = useAuth();
+    const { accessToken, initCartIds, sendAuthRequest } = useAuth();
     const LIMIT = 8;
 
     useEffect(() => {
         setLoading(true);
-        sendRequest(
-            "GET",
-            `products?page=${pageNum}&limit=${LIMIT}`,
-            undefined,
-            undefined
-        )
+        sendRequest("GET", `products?page=${pageNum}&limit=${LIMIT}`)
         .then(response => response.json())
         .then(page => {
             setPage(page);
@@ -33,11 +28,8 @@ const Products = () => {
     }, [pageNum]);
 
     useEffect(() => {
-        if (!token) return;
-        fetch("api/cart/products", {
-            method: "GET",
-            headers: { "Authorization": `Bearer ${token}` }
-        })
+        if (!accessToken) return;
+        sendAuthRequest("GET", "cart/products")
         .then(response => response.ok ? response.json() : [])
         .then((data: ProductDTO[]) => {
             initCartIds(data.map(p => p.id));

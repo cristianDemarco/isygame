@@ -63,13 +63,12 @@ public class AuthenticationService {
     }
 
     public AuthResponseDTO createAuthResponse(RefreshToken refreshToken){
-        
         RefreshToken newRefreshToken = refreshTokenService.getRefreshTokenByTokenString(refreshToken.getToken()).get();
         User user = userRepository.findByEmail(newRefreshToken.getUser().getEmail()).get();
         String jwtToken = jwtService.generateToken(user);
 
         AuthResponseDTO loginResponse = new AuthResponseDTO();
-        loginResponse.setToken(jwtToken);
+        loginResponse.setAccessToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         loginResponse.setRefreshToken(refreshToken.getToken());
 

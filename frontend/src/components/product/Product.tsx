@@ -11,24 +11,24 @@ type ProductProps = {
 
 const Product = ({ product, showAlert }: ProductProps) => {
     const [image, setImage] = useState<string | undefined>();
-    const { token, cartIds, addToCart, removeFromCart } = useAuth();
+    const { accessToken, cartIds, addToCart, removeFromCart, sendAuthRequest} = useAuth();
     const inCart = cartIds.has(product.id);
 
     useEffect(() => {
             sendRequest(
-                "GET", `products/${product.id}/image`, undefined, undefined
+                "GET", `products/${product.id}/image`
                 )
             .then(response => response.blob())
             .then(blob => setImage(URL.createObjectURL(blob)))
         }, []);
 
     const handleToggleCartButton = () => {
-        if (!token) {
+        if (!accessToken) {
             showAlert();
             return;
         }
 
-        sendRequest(inCart ? "DELETE" : "POST", `cart/${product.id}`, undefined, token)
+        sendAuthRequest(inCart ? "DELETE" : "POST", `cart/${product.id}`)
         .then(response => {
             if (!response.ok) throw new Error(`Error while ${inCart ? "removing" : "adding"} product`);
             if (inCart) removeFromCart(product.id);

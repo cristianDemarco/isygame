@@ -35,16 +35,22 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginUserDTO loginUserDTO) {
         User authenticatedUser = authenticationService.authenticate(loginUserDTO);
-        RefreshToken refreshToken = refreshTokenService.generateRefreshToken(authenticatedUser.getEmail());
+        RefreshToken newRefreshToken;
+        Optional<RefreshToken> refreshToken = refreshTokenService.getRefreshTokenByUser(authenticatedUser);
 
-        AuthResponseDTO loginResponse = authenticationService.createAuthResponse(refreshToken);
+        if(refreshToken.isPresent()){
+            newRefreshToken = refreshTokenService.updateRefreshToken(refreshToken.get());
+        } else {
+            newRefreshToken = refreshTokenService.generateRefreshToken(authenticatedUser);
+        }
+        AuthResponseDTO loginResponse = authenticationService.createAuthResponse(newRefreshToken);
 
         return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO) {
-        Optional<RefreshToken> optionalToken = refreshTokenService.getRefreshTokenByTokenString(refreshTokenDTO.getToken());
+        Optional<RefreshToken> optionalToken = refreshTokenService.getRefreshTokenByTokenString(refreshTokenDTO.getRefreshToken());
         
         if(optionalToken.isEmpty()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token not valid or doesn't exist.");

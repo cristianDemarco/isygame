@@ -11,7 +11,7 @@ type CartProductProps = {
 
 const CartProduct = ({cartProduct,onDelete}:CartProductProps) => {
     const [image, setImage] = useState<string | undefined>();
-    const { token } = useAuth();
+    const { accessToken } = useAuth();
         
     useEffect(() => {
             sendRequest(
@@ -22,7 +22,7 @@ const CartProduct = ({cartProduct,onDelete}:CartProductProps) => {
         }, []);
 
     const handleDelete = () => {
-        sendRequest("DELETE", `cart/${cartProduct.id}`, undefined, token)
+        sendRequest("DELETE", `cart/${cartProduct.id}`, undefined, accessToken)
         .then(() => onDelete());
     }
     

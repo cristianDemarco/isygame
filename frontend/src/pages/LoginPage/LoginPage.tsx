@@ -13,8 +13,7 @@ const LoginPage = () => {
     });
 
     const navigate = useNavigate();
-    const {token}=useAuth();
-    const {login, storeUserInfo}=useAuth();
+    const {login, storeUserInfo, sendAuthRequest}=useAuth();
     const [error, setError]=useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,8 +24,7 @@ const LoginPage = () => {
     }
 
     const fetchUserInfo = (token: string) => {
-        console.log("token fetch user info: " + token)
-        sendRequest("GET", "users/me", undefined, token)
+        sendAuthRequest("GET", "users/me", undefined)
         .then(response => response.json())
         .then(data => {
             const user: UserDTO = {
@@ -42,15 +40,14 @@ const LoginPage = () => {
         const response = await sendRequest(
             "POST",
             "auth/login",
-            {email: formData.email, password: formData.password},
-            undefined
+            {email: formData.email, password: formData.password}
         )
 
         const data = await response.json();
 
         if(response.ok){
-            login(data.token);    
-            fetchUserInfo(data.token);        
+            login(data.accessToken, data.refreshToken);    
+            fetchUserInfo(data.accessToken);        
             navigate("/home");
         }
         else {
