@@ -1,4 +1,6 @@
 import { sendRequest } from "../../hooks/useApi";
+import { ApiMethod } from "../../types/ApiMethod";
+import { endpoints } from "../../utils/endpoints";
 import "../../utils/validations";
 import { validatePasswordMatch } from "../../utils/validations";
 import { useState } from 'react';
@@ -29,10 +31,9 @@ const SignupPage = () => {
 
         if(passwordValidation) return;
         const response = await sendRequest(
-            "POST",
-            "auth/signup",
-            {nickname:formData.nickname, email: formData.email, password: formData.password},
-            undefined
+            ApiMethod.POST,
+            endpoints.auth.signup,
+            {nickname:formData.nickname, email: formData.email, password: formData.password}
         )
         const data = await response.json();
         if(response.ok){

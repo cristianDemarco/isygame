@@ -5,6 +5,8 @@ import type { PageDTO } from "../types/PageDTO";
 import Alert from "./Alert";
 import { useAuth } from "../context/AuthContext";
 import { sendRequest } from "../hooks/useApi";
+import { ApiMethod } from "../types/ApiMethod";
+import { endpoints } from "../utils/endpoints";
 
 const Products = () => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -17,7 +19,7 @@ const Products = () => {
 
     useEffect(() => {
         setLoading(true);
-        sendRequest("GET", `products?page=${pageNum}&limit=${LIMIT}`)
+        sendRequest(ApiMethod.GET, endpoints.products.page(pageNum, LIMIT))
         .then(response => response.json())
         .then(page => {
             setPage(page);
@@ -29,7 +31,7 @@ const Products = () => {
 
     useEffect(() => {
         if (!accessToken) return;
-        sendAuthRequest("GET", "cart/products")
+        sendAuthRequest(ApiMethod.GET, endpoints.cart.products.all)
         .then(response => response.ok ? response.json() : [])
         .then((data: ProductDTO[]) => {
             initCartIds(data.map(p => p.id));

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import type { ProductDTO } from "../types/ProductDTO";
 import CartProduct from "./CartProduct/CartProduct";
 import { useAuth } from "../context/AuthContext";
+import { endpoints } from "../utils/endpoints";
+import { ApiMethod } from "../types/ApiMethod";
 
 const Cart = () => {
     const [cartProducts, setCartProducts] = useState<ProductDTO[]>([]);
@@ -11,7 +13,7 @@ const Cart = () => {
 
     useEffect(() => {
             setLoading(true);
-            sendAuthRequest("GET", "cart/products")
+            sendAuthRequest(ApiMethod.GET, endpoints.cart.products.all)
             .then(response => response.json())
             .then(data => {
                 setCartProducts([...data]);
@@ -22,7 +24,7 @@ const Cart = () => {
         }, [refresh]);
 
     const handleDeleteAll = () => {
-        sendAuthRequest("DELETE", "cart/all")
+        sendAuthRequest(ApiMethod.DELETE, endpoints.cart.products.all)
         .then(response => response.json())
         .catch(err => console.log(err.message))
         .finally(() => setRefresh(!refresh));

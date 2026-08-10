@@ -3,6 +3,8 @@ import type { ProductDTO } from "../../types/ProductDTO";
 import "./cartProduct.css"
 import {sendRequest} from "../../hooks/useApi";
 import { useAuth } from "../../context/AuthContext";
+import { ApiMethod } from "../../types/ApiMethod";
+import { endpoints } from "../../utils/endpoints";
 
 type CartProductProps = {
     cartProduct: ProductDTO;
@@ -11,18 +13,17 @@ type CartProductProps = {
 
 const CartProduct = ({cartProduct,onDelete}:CartProductProps) => {
     const [image, setImage] = useState<string | undefined>();
-    const { accessToken } = useAuth();
+    const { sendAuthRequest } = useAuth();
         
     useEffect(() => {
             sendRequest(
-                "GET", `products/${cartProduct.id}/image`, undefined, undefined
-                )
+                ApiMethod.GET, endpoints.products.product.image(cartProduct.id))
             .then(response => response.blob())
             .then(blob => setImage(URL.createObjectURL(blob)))
         }, []);
 
     const handleDelete = () => {
-        sendRequest("DELETE", `cart/${cartProduct.id}`, undefined, accessToken)
+        sendAuthRequest(ApiMethod.DELETE, endpoints.cart.products.product(cartProduct.id))
         .then(() => onDelete());
     }
     

@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, type ReactNode } from "react";
 import { sendRequest } from "../hooks/useApi";
-import type { ApiMethod } from "../types/ApiMethod";
+import { ApiMethod } from "../types/ApiMethod";
+import { endpoints } from "../utils/endpoints";
 
 interface AuthContextType {
     accessToken: string | null;
@@ -69,8 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const handleRefreshToken = async () => {
         const response = await sendRequest(
-            "POST",
-            "auth/refreshtoken",
+            ApiMethod.POST,
+            endpoints.auth.refresh,
             {"refreshToken": refreshToken}
         )
 

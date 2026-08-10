@@ -40,7 +40,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/all")
+    @DeleteMapping("/products")
     public ResponseEntity<HttpStatus> deleteAllProductsFromCart(Authentication authentication){
         cartProductService.deleteAllProductsFromCart(authentication.getName());
 

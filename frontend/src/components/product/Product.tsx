@@ -3,6 +3,8 @@ import { type ProductDTO } from "../../types/ProductDTO";
 import { useAuth } from "../../context/AuthContext";
 import "./product.css";
 import { sendRequest } from "../../hooks/useApi";
+import { ApiMethod } from "../../types/ApiMethod";
+import { endpoints } from "../../utils/endpoints";
 
 type ProductProps = {
     product: ProductDTO;
@@ -15,9 +17,7 @@ const Product = ({ product, showAlert }: ProductProps) => {
     const inCart = cartIds.has(product.id);
 
     useEffect(() => {
-            sendRequest(
-                "GET", `products/${product.id}/image`
-                )
+            sendRequest(ApiMethod.GET, endpoints.products.product.image(product.id))
             .then(response => response.blob())
             .then(blob => setImage(URL.createObjectURL(blob)))
         }, []);
@@ -28,7 +28,7 @@ const Product = ({ product, showAlert }: ProductProps) => {
             return;
         }
 
-        sendAuthRequest(inCart ? "DELETE" : "POST", `cart/${product.id}`)
+        sendAuthRequest(inCart ? ApiMethod.DELETE : ApiMethod.POST, endpoints.cart.products.product(product.id))
         .then(response => {
             if (!response.ok) throw new Error(`Error while ${inCart ? "removing" : "adding"} product`);
             if (inCart) removeFromCart(product.id);

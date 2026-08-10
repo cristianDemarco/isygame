@@ -48,7 +48,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @PostMapping("/refreshtoken")
+    @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO) {
         Optional<RefreshToken> optionalToken = refreshTokenService.getRefreshTokenByTokenString(refreshTokenDTO.getRefreshToken());
         
@@ -58,6 +58,9 @@ public class AuthenticationController {
 
         RefreshToken refreshToken = optionalToken.get();
 
+        System.out.println(refreshToken.getExpiryDate());
+        System.out.println(Instant.now());
+        System.out.println(refreshToken.getExpiryDate().isBefore(Instant.now()));
         if(refreshToken.getExpiryDate().isBefore(Instant.now())){
             refreshTokenService.deleteRefreshToken(refreshToken);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token expired. Log in again.");

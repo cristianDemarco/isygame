@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from 'react';
 import { type UserDTO } from "../../types/UserDTO";
 import { sendRequest } from "../../hooks/useApi";
+import { ApiMethod } from "../../types/ApiMethod";
+import { endpoints } from "../../utils/endpoints";
 
 
 const LoginPage = () => {
@@ -23,8 +25,8 @@ const LoginPage = () => {
         })
     }
 
-    const fetchUserInfo = (token: string) => {
-        sendAuthRequest("GET", "users/me", undefined)
+    const fetchUserInfo = () => {
+        sendAuthRequest(ApiMethod.GET, endpoints.users.me)
         .then(response => response.json())
         .then(data => {
             const user: UserDTO = {
@@ -38,8 +40,8 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const response = await sendRequest(
-            "POST",
-            "auth/login",
+            ApiMethod.POST,
+            endpoints.auth.login,
             {email: formData.email, password: formData.password}
         )
 
@@ -47,7 +49,7 @@ const LoginPage = () => {
 
         if(response.ok){
             login(data.accessToken, data.refreshToken);    
-            fetchUserInfo(data.accessToken);        
+            fetchUserInfo();        
             navigate("/home");
         }
         else {
