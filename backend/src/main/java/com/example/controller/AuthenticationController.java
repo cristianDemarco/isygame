@@ -11,10 +11,6 @@ import com.example.service.RefreshTokenService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.Instant;
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,41 +30,12 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginUserDTO loginUserDTO) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDTO);
-        RefreshToken newRefreshToken;
-        Optional<RefreshToken> refreshToken = refreshTokenService.getRefreshTokenByUser(authenticatedUser);
-
-        if(refreshToken.isPresent()){
-            newRefreshToken = refreshTokenService.updateRefreshToken(refreshToken.get());
-        } else {
-            newRefreshToken = refreshTokenService.generateRefreshToken(authenticatedUser);
-        }
-        AuthResponseDTO loginResponse = authenticationService.createAuthResponse(newRefreshToken);
-
-        return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(authenticationService.login(loginUserDTO));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO) {
-        Optional<RefreshToken> optionalToken = refreshTokenService.getRefreshTokenByTokenString(refreshTokenDTO.getRefreshToken());
-        
-        if(optionalToken.isEmpty()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token not valid or doesn't exist.");
-        }
-
-        RefreshToken refreshToken = optionalToken.get();
-
-        System.out.println(refreshToken.getExpiryDate());
-        System.out.println(Instant.now());
-        System.out.println(refreshToken.getExpiryDate().isBefore(Instant.now()));
-        if(refreshToken.getExpiryDate().isBefore(Instant.now())){
-            refreshTokenService.deleteRefreshToken(refreshToken);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token expired. Log in again.");
-        }
-        refreshTokenService.updateRefreshToken(refreshToken);
-
-        AuthResponseDTO loginResponse = authenticationService.createAuthResponse(refreshToken);
-
-        return ResponseEntity.ok(loginResponse);
+        RefreshToken refreshToken = refreshTokenService.processRefreshToken(refreshTokenDTO);
+        return ResponseEntity.ok(authenticationService.createAuthResponse(refreshToken));
     }
 }

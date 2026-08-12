@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { type ProductDTO } from "../../types/ProductDTO";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import "./product.css";
 import { sendRequest } from "../../hooks/useApi";
 import { ApiMethod } from "../../types/ApiMethod";
@@ -13,7 +14,8 @@ type ProductProps = {
 
 const Product = ({ product, showAlert }: ProductProps) => {
     const [image, setImage] = useState<string | undefined>();
-    const { accessToken, cartIds, addToCart, removeFromCart, sendAuthRequest} = useAuth();
+    const { accessToken, sendAuthRequest} = useAuth();
+    const {cartIds, addToCart, removeFromCart} = useCart();
     const inCart = cartIds.has(product.id);
 
     useEffect(() => {

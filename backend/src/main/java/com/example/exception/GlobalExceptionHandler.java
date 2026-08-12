@@ -31,10 +31,10 @@ public class GlobalExceptionHandler {
         
         if (ex instanceof ExpiredJwtException) {
             error.setErrorCode("TOKEN_EXPIRED");
-            error.setMessage("Il token JWT è scaduto");
+            error.setMessage("JWT token expired");
         } else {
             error.setErrorCode("INVALID_TOKEN");
-            error.setMessage("Token JWT non valido");
+            error.setMessage("JWT token not valid");
         }
         
         error.setStatus(HttpStatus.UNAUTHORIZED.value());

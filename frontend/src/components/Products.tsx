@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { sendRequest } from "../hooks/useApi";
 import { ApiMethod } from "../types/ApiMethod";
 import { endpoints } from "../utils/endpoints";
+import { useCart } from "../context/CartContext";
 
 const Products = () => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -14,7 +15,8 @@ const Products = () => {
     const [page, setPage] = useState<PageDTO<ProductDTO>>();
     const [pageNum, setPageNum] = useState(0);
     const [showAlert, setShowAlert] = useState(false);
-    const { accessToken, initCartIds, sendAuthRequest } = useAuth();
+    const { accessToken, sendAuthRequest } = useAuth();
+    const { initCartIds } = useCart();
     const LIMIT = 8;
 
     useEffect(() => {

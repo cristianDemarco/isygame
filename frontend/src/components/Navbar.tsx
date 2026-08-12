@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom"; 
 import { useAuth} from "../context/AuthContext";
+import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const {accessToken, userInfo, logout } = useAuth();
+    const {accessToken, userInfo } = useAuth();
+    const logout = useLogout();
     
     return (
         <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">

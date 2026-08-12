@@ -2,18 +2,15 @@ import { createContext, useState, useContext, type ReactNode } from "react";
 import { sendRequest } from "../hooks/useApi";
 import { ApiMethod } from "../types/ApiMethod";
 import { endpoints } from "../utils/endpoints";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
     accessToken: string | null;
     refreshToken: string | null;
     userInfo: { nickname: string | null; email: string | null };
-    cartIds: Set<number>;
     login: (newAccessToken: string, newRefreshToken: string) => void;
     logout: () => void;
     storeUserInfo: (newNickname: string, newEmail: string) => void;
-    initCartIds: (ids: number[]) => void;
-    addToCart: (id: number) => void;
-    removeFromCart: (id: number) => void;
     handleRefreshToken: () => Promise<string>;
     sendAuthRequest: (method: ApiMethod, path: string, body?:any) => Promise<Response>;
 }
@@ -21,13 +18,13 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+    const navigate = useNavigate();
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refreshToken"));
     const [userInfo, setUserInfo] = useState({
         nickname: localStorage.getItem("nickname"),
         email: localStorage.getItem("email")
     });
-    const [cartIds, setCartIds] = useState<Set<number>>(new Set());
 
     const setTokens = (newAccessToken: string, newRefreshToken: string) => {
         localStorage.setItem("accessToken", newAccessToken);
@@ -44,28 +41,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         setAccessToken(null);
         setRefreshToken(null);
-        setCartIds(new Set());
         localStorage.clear();
+        navigate("/home");
     }
 
     const storeUserInfo = (newNickname: string, newEmail: string) => {
         setUserInfo({ nickname: newNickname, email: newEmail });
         localStorage.setItem("nickname", newNickname);
         localStorage.setItem("email", newEmail);
-    }
-
-    const initCartIds = (ids: number[]) => {
-        setCartIds(new Set(ids));
-    }
-
-    const addToCart = (id: number) => {
-        setCartIds(new Set([...cartIds, id]));
-    }
-
-    const removeFromCart = (id: number) => {
-        const newSet = new Set(cartIds);
-        newSet.delete(id);
-        setCartIds(newSet);
     }
 
     const handleRefreshToken = async () => {
@@ -106,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{accessToken, refreshToken, userInfo, cartIds, login, logout, storeUserInfo, initCartIds, addToCart, removeFromCart, handleRefreshToken, sendAuthRequest}}>
+        <AuthContext.Provider value={{accessToken, refreshToken, userInfo, login, logout, storeUserInfo, handleRefreshToken, sendAuthRequest}}>
             {children}
         </AuthContext.Provider>
     );

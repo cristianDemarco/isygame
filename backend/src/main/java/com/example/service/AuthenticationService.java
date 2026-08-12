@@ -12,6 +12,8 @@ import com.example.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,6 +47,20 @@ public class AuthenticationService {
         user.setCart(cart);
 
         return userRepository.save(user);
+    }
+
+    public AuthResponseDTO login(LoginUserDTO loginUserDTO){
+        User authenticatedUser = authenticate(loginUserDTO);
+        RefreshToken newRefreshToken;
+        Optional<RefreshToken> refreshToken = refreshTokenService.getRefreshTokenByUser(authenticatedUser);
+
+        if(refreshToken.isPresent()){
+            newRefreshToken = refreshTokenService.updateRefreshToken(refreshToken.get());
+        } else {
+            newRefreshToken = refreshTokenService.generateRefreshToken(authenticatedUser);
+        }
+        
+        return createAuthResponse(newRefreshToken);
     }
 
     public User authenticate(LoginUserDTO input){
