@@ -12,8 +12,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.UpdateTimestamp;
-
 @Entity
 @Table
 @Getter
