@@ -23,7 +23,12 @@ body {
     font-display: swap;
 }
 
+.game-title {
+    font-family: 'Game', sans-serif;
+    letter-spacing: 0.5px;
+}
+
 h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
-  font-family: 'Body', sans-serif;
-  letter-spacing: 0.5px;
+    font-family: 'Body', sans-serif;
+    letter-spacing: 0.5px;
 }
