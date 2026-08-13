@@ -1,5 +1,7 @@
 package com.example.model;
 
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,5 +37,14 @@ public class CartProduct {
         this.cart = cart;
 
         this.id = new CartProductId(product.getId(), cart.getId());
+    }
+
+    @PrePersist
+    @PreUpdate
+    @PreRemove
+    public void touchParent() {
+        if (this.cart != null) {
+            this.cart.setLastUpdate(Instant.now());
+        }
     }
 }

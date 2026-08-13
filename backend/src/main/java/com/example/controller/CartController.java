@@ -12,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +43,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/products")
+    @DeleteMapping("/all")
     public ResponseEntity<HttpStatus> deleteAllProductsFromCart(Authentication authentication){
         cartProductService.deleteAllProductsFromCart(authentication.getName());
 
@@ -51,4 +54,19 @@ public class CartController {
     public List<ProductDTO> getAllProductsFromCart(Authentication authentication){
         return cartProductService.getAllProductsFromCart(authentication.getName());
     }
+
+    @GetMapping("/lastupdate")
+    public ResponseEntity<?> getLastUpdate(Authentication authentication){
+        Instant lastUpdate = cartService.getCartByEmail(authentication.getName()).getLastUpdate();
+
+        if(lastUpdate == null){
+            return ResponseEntity.ok("");
+        }
+
+        Map<String, Instant> response = new HashMap<>();
+        response.put("lastUpdate", lastUpdate);
+
+        return ResponseEntity.ok(response);
+    }
+        
 }

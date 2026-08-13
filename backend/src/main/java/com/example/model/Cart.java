@@ -8,8 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table
@@ -30,4 +33,7 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.MERGE})
     private List<CartProduct> cartProducts = new ArrayList<>();
+
+    @Column
+    private Instant lastUpdate;
 }

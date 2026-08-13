@@ -17,7 +17,8 @@ export const endpoints = {
         products: {
             all: `cart/products`,
             product: (productId: number) => `cart/${productId}`,
-        }
+        },
+        lastUpdate: `cart/lastupdate`
     },
 } as const;
 
