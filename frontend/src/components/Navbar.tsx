@@ -11,7 +11,7 @@ const Navbar = () => {
         <nav className="navbar bg-body-tertiary sticky-top" data-bs-theme="dark">
             <div className="container-fluid">
                 <a className="navbar-brand mx-3 flex-fill" onClick={()=>{navigate("/home")}}>
-                    <img src="src/assets/logo-isygame.png" alt="Logo" width="100" height="100" className="d-inline-block align-text-middle"></img>
+                    <img src="src/assets/images/logo-isygame.png" alt="Logo" width="100" height="100" className="d-inline-block align-text-middle"></img>
                     <h3 className="d-inline-block">Isygame</h3>
                 </a>
                 {

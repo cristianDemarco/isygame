@@ -6,3 +6,24 @@ body {
     linear-gradient(145deg, #ffffff 0%, #eef2ff 50%, #f8fafc 100%);
     min-height: 100vh;
 }
+
+@font-face {
+    font-family: "Body";
+    src: url('./src/assets/fonts/Inter/Inter-VariableFont_opsz\,wght.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Game";
+    src: url('./src/assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .btn {
+  font-family: 'Body', sans-serif;
+  letter-spacing: 0.5px;
+}
