@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Product createProduct(@RequestPart("product") Product product, @RequestPart("image") MultipartFile image){
         try{
             product.setImage(image.getBytes());

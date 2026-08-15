@@ -1,16 +1,17 @@
 package com.example.model;
 
+import com.example.enums.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
@@ -19,8 +20,7 @@ import java.util.List;
 
 @Entity
 @Table
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -47,6 +47,10 @@ public class User implements UserDetails {
     @Column
     private LocalDate createdAt;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @JsonManagedReference
     @OneToOne(cascade= CascadeType.ALL, mappedBy = "user", optional = false)
     @NotNull
@@ -54,17 +58,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_"+this.role.name()));
     }
 
     @Override
     public String getUsername(){
         return email;
-    }
-
-    @Override
-    public String getPassword(){
-        return password;
     }
 
     @Override
