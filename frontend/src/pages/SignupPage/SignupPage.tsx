@@ -30,17 +30,16 @@ const SignupPage = () => {
         e.preventDefault();
 
         if(passwordValidation) return;
-        const response = await sendRequest(
-            ApiMethod.POST,
+        await sendRequest(
+             ApiMethod.POST,
             endpoints.auth.signup,
             {nickname:formData.nickname, email: formData.email, password: formData.password}
         )
-        const data = await response.json();
-        if(response.ok){
-            navigate("/login");
-        } else {
-            setError(data.message);
-        }
+        .then(response => response.json())
+        .then(() => navigate("/login"))
+        .catch(err => {
+            setError(err.message)
+        })
     }
 
     return (

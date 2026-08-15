@@ -8,23 +8,25 @@ export const sendRequest = async (
     body ?: any,
     authToken ?: string |null   
 ) => {
-    return fetch(
-        apiUrl + path,
-        {
-            method,
-            ...(body && {body: JSON.stringify(body)}),
-            headers: {
-                "Content-Type":"application/json",
-                ...(authToken && {"Authorization": `Bearer ${authToken}`})
-            },
-        }).then((response => {
-            if(response.status >= 400){
-                throw {
-                    status: response.status,
-                }
-            } else {
-                return response;
-            }
-        })
-    );
+    const response = await fetch(
+    apiUrl + path,
+    {
+        method,
+        ...(body && {body: JSON.stringify(body)}),
+        headers: {
+            "Content-Type":"application/json",
+            ...(authToken && {"Authorization": `Bearer ${authToken}`})
+        },
+    })
+        
+    if(!response.ok){
+        const errorData = await response.json();
+
+        throw {
+            status: errorData.status,
+            message: errorData.message,
+        }
+    }
+
+    return response;
 };

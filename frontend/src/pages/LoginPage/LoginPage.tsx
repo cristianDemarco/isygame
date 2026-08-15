@@ -23,6 +23,7 @@ const LoginPage = () => {
             ...formData,
             [e.target.name]: e.target.value
         })
+        setError("");
     }
 
     const fetchUserInfo = () => {
@@ -39,22 +40,20 @@ const LoginPage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await sendRequest(
+        await sendRequest(
             ApiMethod.POST,
             endpoints.auth.login,
             {email: formData.email, password: formData.password}
         )
-
-        const data = await response.json();
-
-        if(response.ok){
-            login(data.accessToken, data.refreshToken);    
+        .then(response => response.json())
+        .then(data => {
+            login(data.accessToken, data.refreshToken); 
             fetchUserInfo();        
             navigate("/home");
-        }
-        else {
-            setError(data.message);
-        }
+        })
+        .catch(err => {
+            setError(err.message)
+        })
     }
 
     return (
