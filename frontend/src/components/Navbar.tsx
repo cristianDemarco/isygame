@@ -4,7 +4,7 @@ import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const {accessToken, userInfo } = useAuth();
+    const {accessToken, user } = useAuth();
     const logout = useLogout();
     
     return (
@@ -27,7 +27,7 @@ const Navbar = () => {
                 <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div className="offcanvas-header">
                         {accessToken
-                        ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {userInfo.nickname}</h4>
+                        ? <h4 className="offcanvas-title" id="offcanvasNavbarLabel">Welcome, {user.nickname}</h4>
                         : <h4 className="offcanvas-title" id="offcanvasNavbarLabel" onClick={()=>{navigate("/login")}}>Welcome, login</h4>
                         }
                         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>

@@ -15,7 +15,7 @@ const LoginPage = () => {
     });
 
     const navigate = useNavigate();
-    const {login, storeUserInfo, sendAuthRequest}=useAuth();
+    const {login, storeUser, sendAuthRequest}=useAuth();
     const [error, setError]=useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +32,10 @@ const LoginPage = () => {
         .then(data => {
             const user: UserDTO = {
                 email: data.email,
-                nickname: data.nickname
+                nickname: data.nickname,
+                roles: data.roles
             }; 
-            storeUserInfo(user.nickname, user.email);
+            storeUser(user.nickname, user.email, user.roles);
         })
     }
 

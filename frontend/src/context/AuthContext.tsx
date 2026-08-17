@@ -3,28 +3,36 @@ import { sendRequest } from "../hooks/useApi";
 import { ApiMethod } from "../types/ApiMethod";
 import { endpoints } from "../utils/endpoints";
 import { useNavigate } from "react-router-dom";
+import type { UserDTO } from "../types/UserDTO";
 
 interface AuthContextType {
     accessToken: string | null;
     refreshToken: string | null;
-    userInfo: { nickname: string | null; email: string | null };
+    user: { nickname: string | null; email: string | null; roles: string[] | null};
     login: (newAccessToken: string, newRefreshToken: string) => void;
     logout: () => void;
-    storeUserInfo: (newNickname: string, newEmail: string) => void;
+    storeUser: (newNickname: string | null, newEmail: string | null, newRoles: string[] | null) => void;
     handleRefreshToken: () => Promise<string>;
     sendAuthRequest: (method: ApiMethod, path: string, body?:any) => Promise<Response>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+const getStoredUser = (): UserDTO => {
+  const stored = localStorage.getItem("user");
+  if (!stored) return { nickname: null, email: null, roles: null };
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return { nickname: null, email: null, roles: null };
+  }
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const navigate = useNavigate();
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refreshToken"));
-    const [userInfo, setUserInfo] = useState({
-        nickname: localStorage.getItem("nickname"),
-        email: localStorage.getItem("email")
-    });
+    const [user, setUser] = useState<UserDTO>(getStoredUser);
 
     const setTokens = (newAccessToken: string, newRefreshToken: string) => {
         localStorage.setItem("accessToken", newAccessToken);
@@ -45,10 +53,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         navigate("/home");
     }
 
-    const storeUserInfo = (newNickname: string, newEmail: string) => {
-        setUserInfo({ nickname: newNickname, email: newEmail });
-        localStorage.setItem("nickname", newNickname);
-        localStorage.setItem("email", newEmail);
+    const storeUser = (newNickname: string | null, newEmail: string | null, newRoles: string[] | null) => {
+        const newUser: UserDTO = { nickname: newNickname, email: newEmail, roles:newRoles};
+        setUser(newUser);
+        localStorage.setItem("user", JSON.stringify(newUser));
     }
 
     const handleRefreshToken = async () => {
@@ -89,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{accessToken, refreshToken, userInfo, login, logout, storeUserInfo, handleRefreshToken, sendAuthRequest}}>
+        <AuthContext.Provider value={{accessToken, refreshToken, user, login, logout, storeUser, handleRefreshToken, sendAuthRequest}}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,4 +1,5 @@
 export interface UserDTO{
-    email: string,
-    nickname: string
+    email: string | null,
+    nickname: string | null,
+    roles: string[] | null
 }

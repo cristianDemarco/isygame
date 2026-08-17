@@ -1,3 +1,5 @@
 package com.example.DTOs.response;
 
-public record UserDTO(String email, String nickname) {}
+import java.util.List;
+
+public record UserDTO(String email, String nickname, List<String> roles) {}
