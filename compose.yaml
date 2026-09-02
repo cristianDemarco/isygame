@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build: ./frontend
+    env_file:
+      - ./frontend/.env
+    networks:
+      - app-network
+    ports:
+      - "5173:5173"
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql
+    env_file:
+      - ./mysql/.env
+    ports:
+      - "3307:3306"
+    networks:
+      - app-network
+    volumes:
+      - ./mysql/init-scripts:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+networks:
+  app-network:
+volumes:
+  mysql-data:
