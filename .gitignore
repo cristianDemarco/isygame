@@ -1,6 +1,7 @@
 ### ENV FILES ###
 frontend/.env
 backend/.env
+mysql/.env
 
 ### BACKEND (Spring Boot / Maven) ###
 backend/target/
